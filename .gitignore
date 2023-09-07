@@ -1,0 +1,5 @@
+venv/
+__pycache__
+.ipynb_checkpoints
+sage.egg-info
+build
