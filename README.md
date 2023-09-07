@@ -64,7 +64,7 @@ a complete solution that you need when working on a spelling problem:
 ## Installation
 ### Regular install
 ```commandline
-git clone https://github.com/orgs/ai-forever/sage
+git clone https://github.com/ai-forever/sage.git
 cd sage
 pip install .
 pip install -r requirements.txt
@@ -72,7 +72,7 @@ pip install -r requirements.txt
 
 ### Editable install
 ```commandline
-git clone https://github.com/orgs/ai-forever/sage
+git clone https://github.com/ai-forever/sage.git
 cd sage
 pip install -e .
 pip install -r requirements.txt
