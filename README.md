@@ -1,6 +1,10 @@
-<h1 align="center">
-    <p> SAGE </p>
-</h1>
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="images/sage-white.svg">
+    <source media="(prefers-color-scheme: light)" srcset="images/sage-black.svg">
+    <img alt="SAGE" src="images/sage-white.svg" style="max-width: 100%;">
+  </picture>
+</p>
 
 <p align="center">
     <a href="https://opensource.org/licenses/MIT">
@@ -136,7 +140,7 @@ corruptor.corrupt(text, seed=1)
 # 'Screw you kuys, I am going home. (c)'
 ```
 
-Now we can use our models to restore our writings back:
+Now we can use our models to restore the initial text back:
 ```python
 from sage.spelling_correction import AvailableCorrectors
 from sage.spelling_correction import RuM2M100ModelForSpellingCorrection, T5ModelForSpellingCorruption
@@ -162,11 +166,11 @@ from sage.utils import DatasetsAvailable
 from sage.spelling_correction import AvailableCorrectors
 from sage.spelling_correction import RuM2M100ModelForSpellingCorrection, T5ModelForSpellingCorruption
 
-corrector_418m = RuM2M100ModelForSpellingCorrection.from_pretrained(AvailableCorrectors.m2m100_420M.value)
+corrector_418m = RuM2M100ModelForSpellingCorrection.from_pretrained(AvailableCorrectors.m2m100_418M.value)
 corrector_en = T5ModelForSpellingCorruption.from_pretrained(AvailableCorrectors.ent5_large.value)
 
 corrector_418m.model.to(torch.device("cuda:0"))
-corrector_en.model.to(torch.device("cuda:1"))
+corrector_en.model.to(torch.device("cuda:0"))
 
 metrics = corrector_418m.evaluate(DatasetsAvailable.RUSpellRU.name, batch_size=32)
 print(metrics)
@@ -292,7 +296,7 @@ specific methods suited for particular level:
   - _swap_ - swap two adjacent characters;
   - _insert_ - insert random character;
 
-To access Augmentex you only need these few manipulation:
+To access Augmentex you only need these few manipulations:
 ```python
 from sage.spelling_corruption import CharAugConfig, CharAugCorruptor
 
@@ -360,60 +364,60 @@ datasets.
 
 #### RUSpellRU Evaluation
 
-| Model                                | Precision | Recall | F1   |
-|--------------------------------------|-----------|--------|------|
-| M2M100-1.2B (Pre-train)              | 59.4      | 43.3   | 50.1 |
-| M2M100-1.2B (Pre-train + fine-tune)  | 82.9      | 72.5   | 77.3 |
-| M2M100-418M (Pre-train)              | 57.7      | 61.2   | 59.4 |
-| M2M100-418M (Pre-train + fine-tune)  | 81.8      | 63.4   | 71.4 |
-| FredT5-large (Pre-train)             | 58.5      | 42.4   | 49.2 |
-| FredT5-large (Pre-train + fine-tune) | 55.1      | 73.2   | 62.9 |
-| ChatGPT text-davinci-003             | 55.9      | 75.3   | 64.2 |
-| Yandex.Speller                       | 83.0      | 59.8   | 69.5 |
+| Model                                | Precision | Recall   | F1       |
+|--------------------------------------|-----------|----------|----------|
+| M2M100-1.2B (Pre-train)              | 59.4      | 43.3     | 50.1     |
+| M2M100-1.2B (Pre-train + fine-tune)  | 82.9      | 72.5     | **77.3** |
+| M2M100-418M (Pre-train)              | 57.7      | 61.2     | 59.4     |
+| M2M100-418M (Pre-train + fine-tune)  | 81.8      | 63.4     | 71.4     |
+| FredT5-large (Pre-train)             | 58.5      | 42.4     | 49.2     |
+| FredT5-large (Pre-train + fine-tune) | 55.1      | 73.2     | 62.9     |
+| ChatGPT text-davinci-003             | 55.9      | **75.3** | 64.2     |
+| Yandex.Speller                       | **83.0**  | 59.8     | 69.5     |
 
 
 #### MultidomainGold Evaluation
 
-| Model                                | Precision | Recall | F1   |
-|--------------------------------------|-----------|--------|------|
-| M2M100-1.2B (Pre-train)              | 56.4      | 44.8   | 49.9 |
-| M2M100-1.2B (Pre-train + fine-tune)  | 62.5      | 60.9   | 61.7 |
-| M2M100-418M (Pre-train)              | 32.8      | 56.3   | 41.5 |
-| M2M100-418M (Pre-train + fine-tune)  | 57.9      | 56.5   | 57.2 |
-| FredT5-large (Pre-train)             | 42.5      | 42.0   | 42.2 |
-| FredT5-large (Pre-train + fine-tune) | 61.7      | 60.5   | 61.1 |
-| ChatGPT gpt-4-0314                   | 34.0      | 73.2   | 46.4 |
-| Yandex.Speller                       | 52.9      | 51.4   | 52.2 |
+| Model                                | Precision | Recall   | F1       |
+|--------------------------------------|-----------|----------|----------|
+| M2M100-1.2B (Pre-train)              | 56.4      | 44.8     | 49.9     |
+| M2M100-1.2B (Pre-train + fine-tune)  | **62.5**  | 60.9     | **61.7** |
+| M2M100-418M (Pre-train)              | 32.8      | 56.3     | 41.5     |
+| M2M100-418M (Pre-train + fine-tune)  | 57.9      | 56.5     | 57.2     |
+| FredT5-large (Pre-train)             | 42.5      | 42.0     | 42.2     |
+| FredT5-large (Pre-train + fine-tune) | 61.7      | 60.5     | 61.1     |
+| ChatGPT gpt-4-0314                   | 34.0      | **73.2** | 46.4     |
+| Yandex.Speller                       | 52.9      | 51.4     | 52.2     |
 
 
 #### MedSpellchecker Evaluation
 
-| Model                                | Precision | Recall | F1   |
-|--------------------------------------|-----------|--------|------|
-| M2M100-1.2B (Pre-train)              | 63.7      | 57.8   | 60.6 |
-| M2M100-1.2B (Pre-train + fine-tune)  | 78.8      | 71.4   | 74.9 |
-| M2M100-418M (Pre-train)              | 23.2      | 64.5   | 34.1 |
-| M2M100-418M (Pre-train + fine-tune)  | 73.1      | 62.4   | 67.3 |
-| FredT5-large (Pre-train)             | 37.2      | 51.7   | 43.3 |
-| FredT5-large (Pre-train + fine-tune) | 37.5      | 59.3   | 45.9 |
-| ChatGPT gpt-4-0314                   | 54.2      | 69.4   | 60.9 |
-| Yandex.Speller                       | 80.6      | 47.8   | 60.0 |
+| Model                                | Precision | Recall   | F1       |
+|--------------------------------------|-----------|----------|----------|
+| M2M100-1.2B (Pre-train)              | 63.7      | 57.8     | 60.6     |
+| M2M100-1.2B (Pre-train + fine-tune)  | 78.8      | **71.4** | **74.9** |
+| M2M100-418M (Pre-train)              | 23.2      | 64.5     | 34.1     |
+| M2M100-418M (Pre-train + fine-tune)  | 73.1      | 62.4     | 67.3     |
+| FredT5-large (Pre-train)             | 37.2      | 51.7     | 43.3     |
+| FredT5-large (Pre-train + fine-tune) | 37.5      | 59.3     | 45.9     |
+| ChatGPT gpt-4-0314                   | 54.2      | 69.4     | 60.9     |
+| Yandex.Speller                       | **80.6**  | 47.8     | 60.0     |
 
 
 #### GitHubTypoCorpusRu Evaluation
 
-| Model                                | Precision | Recall | F1   |
-|--------------------------------------|-----------|--------|------|
-| M2M100-1.2B (Pre-train)              | 45.7      | 41.4   | 43.5 |
-| M2M100-1.2B (Pre-train + fine-tune)  | 47.1      | 42.9   | 44.9 |
-| M2M100-418M (Pre-train)              | 27.5      | 42.6   | 33.4 |
-| M2M100-418M (Pre-train + fine-tune)  | 42.8      | 37.8   | 40.2 |
-| FredT5-large (Pre-train)             | 52.7      | 42.4   | 46.6 |
-| FredT5-large (Pre-train + fine-tune) | 61.2      | 45.4   | 52.1 |
-| ChatGPT text-davinci-003             | 46.5      | 58.1   | 51.7 |
-| Yandex.Speller                       | 67.7      | 37.5   | 48.3 |
+| Model                                | Precision | Recall   | F1       |
+|--------------------------------------|-----------|----------|----------|
+| M2M100-1.2B (Pre-train)              | 45.7      | 41.4     | 43.5     |
+| M2M100-1.2B (Pre-train + fine-tune)  | 47.1      | 42.9     | 44.9     |
+| M2M100-418M (Pre-train)              | 27.5      | 42.6     | 33.4     |
+| M2M100-418M (Pre-train + fine-tune)  | 42.8      | 37.8     | 40.2     |
+| FredT5-large (Pre-train)             | 52.7      | 42.4     | 46.6     |
+| FredT5-large (Pre-train + fine-tune) | 61.2      | 45.4     | **52.1** |
+| ChatGPT text-davinci-003             | 46.5      | **58.1** | 51.7     |
+| Yandex.Speller                       | **67.7**  | 37.5     | 48.3     |
 
-All mentioned datasets are available as HuggingFace datasets [here](https://huggingface.co/datasets/ai-forever/spellcheck_benchmark) and through the API of our library: 
+All the mentioned datasets are available as HuggingFace datasets [here](https://huggingface.co/datasets/ai-forever/spellcheck_benchmark) and through the API of our library: 
 ```python
 from sage.utils import load_available_dataset_from_hf, DatasetsAvailable
 
@@ -430,14 +434,14 @@ print(len(sources), len(corrections))
 ```
 
 ## Evaluation
-We also provide functionality to evaluate and rank performance of spelling correction systems. 
+We also provide functionality to evaluate the performance of spelling correction systems and rank them. 
 
 🎯 Here is what you get and how you can interpret these:
-- **Precision**: share of unnecessary amendments; 
+- **Precision**: one minus share of unnecessary amendments; 
 - **Recall**: proportion of expected corrections;
 - **F1**: famous geometric mean of aforementioned two;
 
-You can obtain these metrics simpy by
+You can obtain these metrics simply by
 ```python
 from sage.evaluation import evaluation
 from sage.utils import DatasetsAvailable, load_available_dataset_from_hf
@@ -450,15 +454,20 @@ print(metrics)
 
 ... or by directly assessing the model:
 ```python
+import torch
 from sage.spelling_correction import AvailableCorrectors, RuM2M100ModelForSpellingCorrection, T5ModelForSpellingCorruption
 from sage.utils import DatasetsAvailable
 
-corrector = RuM2M100ModelForSpellingCorrection.from_pretrained(AvailableCorrectors.m2m100_420M.value)
+corrector = RuM2M100ModelForSpellingCorrection.from_pretrained(AvailableCorrectors.m2m100_418M.value)
+corrector.model.to(torch.device("cuda:0"))
+
 metrics = corrector.evaluate(DatasetsAvailable.MultidomainGold.name, batch_size=16)
 print(metrics)
 # {'Precision': 32.82, 'Recall': 57.69, 'F1': 41.84}
 
 corrector = T5ModelForSpellingCorruption.from_pretrained(AvailableCorrectors.ent5_large.value)
+corrector.model.to(torch.device("cuda:0"))
+
 metrics = corrector.evaluate("../data/example_data/jfleg/", batch_size=32, prefix="grammar: ")
 print(metrics)
 # {'Precision': 83.43, 'Recall': 84.25, 'F1': 83.84}
@@ -470,8 +479,8 @@ in proceedings of [SpellRueval](https://www.dialog-21.ru/evaluation/2016/spellin
 ## Citation
 If you want to know more about our work take a look at these publications:
 
-💥 Our first [Paper](https://arxiv.org/abs/2308.09435) provides thorough description of methodology used to obtain SOTA 
-models for spelling corrections as well comprehensive reports of all experiments that have been carried out. 
+💥 Our first [Paper](https://arxiv.org/abs/2308.09435) provides a thorough description of the methodology used to obtain SOTA 
+models for spelling corrections as well the comprehensive reports of all experiments that have been carried out. 
 
 💫 While our Dialogue-2023 [Paper](https://www.dialog-21.ru/media/5914/martynovnplusetal056.pdf) focuses on exploiting 
 resources for the task of spelling correction and procedures on obtaining high-quality parallel corpuses. 

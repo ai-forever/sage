@@ -164,8 +164,9 @@ def process_mistypings(
     global_cm = {}
     mistypings_cnt = []
     pattern = string.punctuation.replace("-", "")
-    
-    for source, correction in tqdm(zip(src, corr)):
+
+    l = len(src)
+    for source, correction in tqdm(zip(src, corr), total=l):
         source = re.sub(r"[{}]".format(pattern), "", source.lower().strip())
         correction = re.sub(r"[{}]".format(pattern), "", correction.lower().strip())
         
@@ -176,7 +177,7 @@ def process_mistypings(
         mistypings_cnt.append(sum((len(v) for _, v in local_stats.items())))
         for typo, positions in local_stats.items():
             global_stats[typo]["abs"].extend(positions)
-            global_stats[typo]["rel"].extend([pos / len(source) for pos in positions])
+            global_stats[typo]["rel"].extend([0. if len(source) == 0 else pos / len(source) for pos in positions])
         for correct_char, candidates in local_cm.items():
             if correct_char not in global_cm:
                 global_cm[correct_char] = {}

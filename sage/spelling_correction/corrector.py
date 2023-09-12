@@ -32,7 +32,7 @@ class AvailableCorrectors(enum.Enum):
     """Available models for spelling correction"""
 
     m2m100_1B = "ai-forever/RuM2M100-1.2B"
-    m2m100_420M = "ai-forever/RuM2M100-418M"
+    m2m100_418M = "ai-forever/RuM2M100-418M"
     fred_large = "ai-forever/FRED-T5-large-spell"
     ent5_large = "ai-forever/T5-large-spell"
 

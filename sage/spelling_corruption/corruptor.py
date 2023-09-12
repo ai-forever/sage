@@ -21,7 +21,6 @@ from dataclasses import asdict
 from typing import List, Union, Optional
 from abc import ABCMeta, abstractmethod
 
-import numpy as np
 from augmentex.char import CharAug
 from augmentex.word import WordAug
 
@@ -92,18 +91,12 @@ class AugCorruptor(Corruptor, metaclass=ABCMeta):
     """Base class for Augmentex-based corruptors."""
 
     def corrupt(self, sentence: str, action: Optional[str] = None, seed: Optional[int] = 42) -> str:
-        rng = np.random.default_rng(seed)
-        if action is None:
-            action = rng.choice(self.engine.actions_list)
-        return self.engine.augment(sentence, action=action)
+        return self.engine.augment(sentence, seed=seed, action=action)
 
     def batch_corrupt(
             self, sentences: List[str], action: Optional[str] = None, batch_prob: Optional[float] = 0.3,
             seed: Optional[int] = 42) -> List[str]:
-        rng = np.random.default_rng(seed)
-        if action is None:
-            action = rng.choice(self.engine.actions_list)
-        return self.engine.aug_batch(sentences, batch_prob=batch_prob, action=action)
+        return self.engine.aug_batch(sentences, seed=seed, batch_prob=batch_prob, action=action)
 
 
 class WordAugCorruptor(AugCorruptor):

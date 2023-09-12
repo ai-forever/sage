@@ -33,14 +33,15 @@ setup(
     classifiers=[
         "Natural Language :: English",
         "Natural Language :: Russian",
-        "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
         "Topic :: Scientific/Engineering :: Artificial Intelligence",
         "Topic :: Software Development :: Libraries :: Python Modules",
         "Topic :: Text Editors :: Text Processing",
     ],
-    python_requires=">=3.7.0",
+    python_requires=">=3.7.0,<3.11.0",
     install_requires=requirements,
     keywords="sage spelling correction nlp deep learning transformers pytorch"
 )

@@ -11,6 +11,7 @@ from collections import defaultdict
 
 import numpy as np
 import timeout_decorator
+from tqdm import tqdm
 
 
 class TimeOutValidation(Exception):
@@ -341,10 +342,12 @@ def align_sents(source, correct, return_only_different=False, replace_cost=1.0,
 def make_corrections_data(source_sents, correct_sents, answer_sents):
     etalon_corrections = dict()
     answer_corrections = dict()
+    pb = tqdm(total=len(source_sents))
+
     for num, (source, correct, answer) in\
             enumerate(zip(source_sents, correct_sents, answer_sents)):
         try:
-            print(num)
+            pb.update(1)
             correct_indexes = align_sents(source, correct, return_only_different=True, replace_cost=1.9)
             src_indexes = align_sents(source, answer, return_only_different=True, replace_cost=1.9,
                                   groups_in_source=[elem[0] for elem in correct_indexes])

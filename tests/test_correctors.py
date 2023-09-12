@@ -13,7 +13,7 @@ example_sentences_en = [
 
 if __name__ == "__main__":
     m2m_large_corrector = RuM2M100ModelForSpellingCorrection.from_pretrained(AvailableCorrectors.m2m100_1B.value)
-    m2m_small_corrector = RuM2M100ModelForSpellingCorrection.from_pretrained(AvailableCorrectors.m2m100_420M.value)
+    m2m_small_corrector = RuM2M100ModelForSpellingCorrection.from_pretrained(AvailableCorrectors.m2m100_418M.value)
     fred_corrector = T5ModelForSpellingCorruption.from_pretrained(AvailableCorrectors.fred_large.value)
     ent5_corrector = T5ModelForSpellingCorruption.from_pretrained(AvailableCorrectors.ent5_large.value)
 
