@@ -206,15 +206,15 @@ Briefly, SBSC follows two simple steps:
 - ✏️ Reproduce errors from the source text in a new sentence;
 
 🧠 To analyze errors in a source sentence we need its corresponding correction in order to build 
-[Levenshtein matrix](https://en.wikipedia.org/wiki/Levenshtein_distance), traverse it back then starting from the 
-bottom right entry determine the exact position and type of an error. We then aggregate all obtained statistics and 
+[Levenshtein matrix](https://en.wikipedia.org/wiki/Levenshtein_distance), traverse it back starting from the 
+bottom right entry and determine the exact position and type of an error. We then aggregate all obtained statistics and 
 normalize it to valid discrete distributions. 
 
 ✏️ "Reproduce" step is even less complicated: we just sample number of errors per sentence, their types and relative
 positions from corresponding distributions and apply them to a correct sentence.
 
 As stated, you need a parallel dataset to "fit" SBSC. We provide a set of four datasets with natural errors covering
-exhaustive range of domain:
+exhaustive range of domains:
 
 - **RUSpellRU**: texts collected from [LiveJournal](https://www.livejournal.com/media), with manually corrected typos and errors;
 - **MultidomainGold**: examples from 7 text sources, including the open web, news, social media, reviews, subtitles, policy documents and literary works;
