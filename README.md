@@ -10,7 +10,7 @@
     <a href="https://opensource.org/licenses/MIT">
     <img alt="License" src="https://img.shields.io/badge/License-MIT-yellow.svg">
     </a>
-    <a href="https://github.com/meduzick/sage/releases">
+    <a href="https://github.com/ai-forever/sage/releases">
     <img alt="Release" src="https://img.shields.io/badge/release-v1.0.0-blue">
     </a>
     <a href="https://arxiv.org/abs/2308.09435">
