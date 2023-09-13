@@ -213,7 +213,7 @@ normalize it to valid discrete distributions.
 ✏️ "Reproduce" step is even less complicated: we just sample number of errors per sentence, their types and relative
 positions from corresponding distributions and apply them to a correct sentence.
 
-As stated, you need parallel a dataset to "fit" SBSC. We provide a set of four datasets with natural errors covering
+As stated, you need a parallel dataset to "fit" SBSC. We provide a set of four datasets with natural errors covering
 exhaustive range of domain:
 
 - **RUSpellRU**: texts collected from [LiveJournal](https://www.livejournal.com/media), with manually corrected typos and errors;
