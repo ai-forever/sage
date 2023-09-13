@@ -45,7 +45,7 @@ a complete solution that you need when working on a spelling problem:
   - [T5-large](https://huggingface.co/ai-forever/T5-large-spell)
 
   You can test them out right here [![Try Model Generation In Colab!](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1Ch6MN7UylWY1TfKG9_OoBOxj5-1usjOJ?usp=sharing)
-- 🧩 Augment your data with spelling corruption algorithms, take a look at quick demo [![Try Model Generation In Colab!](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1jA_L0F-JRbRuIRH7OmugnqG04N6dvntt?usp=sharing)
+- 🧩 Augment your data with spelling corruption algorithms, take a look at a quick demo [![Try Model Generation In Colab!](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1jA_L0F-JRbRuIRH7OmugnqG04N6dvntt?usp=sharing)
 - 📊 Evaluate performance of spelling correction tools.
 
 ## Table of contents
@@ -118,7 +118,7 @@ config = WordAugConfig(
 corruptor = WordAugCorruptor.from_config(config)
 
 corruptor.corrupt(text, seed=1)
-# 'Заметьте, я это не предложил!'
+# 'это не предложил! Заметьте, я'
 ```
 
 ... or for the English language:
@@ -182,6 +182,13 @@ print(metrics)
 
 ```
 
+_NOTE_: if you are launching code snippet in Colab you'd probably end up with MEMORY ERROR, so manage evaluation 
+procedures so that you meet available device's restrictions. As a feasible workaround you can execute 
+```python
+del corrector_418m.model
+```
+to free some space. 
+
 ## Spelling Corruption
 We implemented two methods for spelling corruption. **S**tatistic-**b**ased **S**pelling **C**orruption (**SBSC**) aims 
 to mimic human behaviour when making an error. While [Augmentex](#augmentex) relies on rule-based heuristics and common
@@ -195,8 +202,8 @@ This method is thoroughly described in our another [Paper](https://www.dialog-21
 and in this 🗣️[Talk](https://youtu.be/yFfkV0Qjuu0?si=XmKfocCSLnKihxS_). 
 
 Briefly, SBSC follows two simple steps:
-- 🧠 Analyze errors, their type and positions in source text;
-- ✏️ Reproduce errors from source text on a new sentence;
+- 🧠 Analyze errors, their type and positions in a source text;
+- ✏️ Reproduce errors from the source text in a new sentence;
 
 🧠 To analyze errors in a source sentence we need its corresponding correction in order to build 
 [Levenshtein matrix](https://en.wikipedia.org/wiki/Levenshtein_distance), traverse it back then starting from the 
@@ -204,9 +211,9 @@ bottom right entry determine the exact position and type of an error. We then ag
 normalize it to valid discrete distributions. 
 
 ✏️ "Reproduce" step is even less complicated: we just sample number of errors per sentence, their types and relative
-positions from corresponding distributions and apply them to correct sentence.
+positions from corresponding distributions and apply them to a correct sentence.
 
-As stated, you need parallel dataset to "fit" SBSC. We provide a set of four datasets with natural errors covering
+As stated, you need parallel a dataset to "fit" SBSC. We provide a set of four datasets with natural errors covering
 exhaustive range of domain:
 
 - **RUSpellRU**: texts collected from [LiveJournal](https://www.livejournal.com/media), with manually corrected typos and errors;
