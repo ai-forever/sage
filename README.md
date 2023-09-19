@@ -329,6 +329,8 @@ config = WordAugConfig(
 corruptor = WordAugCorruptor.from_config(config)
 ```
 
+Augmentex has been created by our fellow team, the project has its own [repo](https://github.com/ai-forever/augmentex), do not forget to take a look! 
+
 ## Spelling Correction
 Our methodology for obtaining model with optimal performance on spellchecking task is thoroughly described in our
 [Paper](https://arxiv.org/abs/2308.09435). And the algorithm is simple and generally consists of two steps:
