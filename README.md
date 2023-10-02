@@ -109,7 +109,7 @@ from sage.spelling_corruption import WordAugConfig, WordAugCorruptor
 
 text = "Заметьте, не я это предложил!"
 
-# Instantiate SBSC corruptor from a dataset with errors in medical anamnesis
+# Instantiate WordAugCorruptor corruptor with a custom set of parameters
 config = WordAugConfig(
     min_aug=1,
     max_aug=5,
