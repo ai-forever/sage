@@ -15,8 +15,6 @@ from transformers import T5ForConditionalGeneration, AutoTokenizer
 
 from .corrector import Corrector
 
-# TODO: remove auth_token when public release
-
 
 class T5ModelForSpellingCorruption(Corrector):
     """T5-based models."""
@@ -28,7 +26,7 @@ class T5ModelForSpellingCorruption(Corrector):
     @classmethod
     def from_pretrained(cls, model_name_or_path: Union[str, os.PathLike]):
         engine = cls(model_name_or_path)
-        engine.model = T5ForConditionalGeneration.from_pretrained(model_name_or_path, use_auth_token=True)
+        engine.model = T5ForConditionalGeneration.from_pretrained(model_name_or_path)
         engine.tokenizer = AutoTokenizer.from_pretrained(model_name_or_path, eos_token="</s>")
 
         return engine

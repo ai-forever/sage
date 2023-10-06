@@ -18,8 +18,6 @@ class DatasetsAvailable(enum.Enum):
 
 datasets_available = [dataset.name for dataset in DatasetsAvailable]
 
-# TODO: remove `use_auth_token` from `load_dataset` after public release
-
 
 def load_available_dataset_from_hf(
         dataset_name: str, for_labeler: bool, split: Optional[str] = None
@@ -27,7 +25,7 @@ def load_available_dataset_from_hf(
     if dataset_name not in datasets_available:
         raise ValueError("You provided wrong dataset name: {}\nAvailable datasets are: {}".format(
             dataset_name, *datasets_available))
-    dataset = load_dataset("ai-forever/spellcheck_benchmark", dataset_name, split=split, use_auth_token=True)
+    dataset = load_dataset("ai-forever/spellcheck_benchmark", dataset_name, split=split)
     if split is None:
         dataset = pd.concat([dataset[split].to_pandas() for split in dataset.keys()]).reset_index(drop=True)
     else:
