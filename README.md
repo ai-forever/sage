@@ -44,8 +44,8 @@ a complete solution that you need when working on a spelling problem:
   - [FredT5-large](https://huggingface.co/ai-forever/FRED-T5-large-spell)
   - [T5-large](https://huggingface.co/ai-forever/T5-large-spell)
 
-  You can test them out right here [![Try Model Generation In Colab!](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1Ch6MN7UylWY1TfKG9_OoBOxj5-1usjOJ?usp=sharing)
-- 🧩 Augment your data with spelling corruption algorithms, take a look at a quick demo [![Try Model Generation In Colab!](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1jA_L0F-JRbRuIRH7OmugnqG04N6dvntt?usp=sharing)
+  You can test them out right here [![Try Model Generation In Colab!](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ai-forever/sage/blob/main/notebooks/text_correction_demo.ipynb)
+- 🧩 Augment your data with spelling corruption algorithms, take a look at a quick demo [![Try Model Generation In Colab!](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ai-forever/sage/blob/main/notebooks/text_corruption_demo.ipynb)
 - 📊 Evaluate performance of spelling correction tools.
 
 ## Table of contents
