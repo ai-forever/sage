@@ -16,8 +16,6 @@ from transformers.models.m2m_100.tokenization_m2m_100 import M2M100Tokenizer
 
 from .corrector import Corrector
 
-# TODO: remove auth_token when public release
-
 
 class RuM2M100ModelForSpellingCorrection(Corrector):
     """M2M100-based models."""
@@ -28,7 +26,7 @@ class RuM2M100ModelForSpellingCorrection(Corrector):
     @classmethod
     def from_pretrained(cls, model_name_or_path: Union[str, os.PathLike]):
         engine = cls(model_name_or_path)
-        engine.model = M2M100ForConditionalGeneration.from_pretrained(model_name_or_path, use_auth_token=True)
+        engine.model = M2M100ForConditionalGeneration.from_pretrained(model_name_or_path)
         engine.tokenizer = M2M100Tokenizer.from_pretrained(model_name_or_path, src_lang="ru", tgt_lang="ru")
 
         return engine
