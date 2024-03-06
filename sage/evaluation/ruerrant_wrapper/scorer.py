@@ -11,12 +11,12 @@ from collections import Counter, namedtuple
 from typing import Iterable
 
 import spacy
+from errant.annotator import Annotator
+from errant.commands.compare_m2 import process_edits
+from errant.commands.compare_m2 import evaluate_edits
+from errant.commands.compare_m2 import merge_dict
+from errant.edit import Edit
 
-from sage.evaluation.errant.errant.annotator import Annotator
-from sage.evaluation.errant.errant.commands.compare_m2 import process_edits
-from sage.evaluation.errant.errant.commands.compare_m2 import evaluate_edits
-from sage.evaluation.errant.errant.commands.compare_m2 import merge_dict
-from sage.evaluation.errant.errant.edit import Edit
 from sage.evaluation.ruerrant_wrapper import classifier
 from sage.evaluation.ruerrant_wrapper import merger
 

@@ -5,9 +5,8 @@ import re
 from string import punctuation
 
 import Levenshtein
-
-from sage.evaluation.errant.errant.alignment import Alignment
-from sage.evaluation.errant.errant.edit import Edit
+from errant.alignment import Alignment
+from errant.edit import Edit
 
 
 def get_rule_edits(alignment: Alignment) -> list[Edit]:

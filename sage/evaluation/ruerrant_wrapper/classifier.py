@@ -4,8 +4,7 @@ from collections import defaultdict
 from string import punctuation
 
 import Levenshtein
-
-from sage.evaluation.errant.errant.edit import Edit
+from errant.edit import Edit
 
 
 def edit_to_tuple(edit: Edit, idx: int = 0) -> tuple[int, int, str, str, int]:
