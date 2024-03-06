@@ -1,0 +1,3 @@
+[submodule "sage/evaluation/errant"]
+	path = sage/evaluation/errant
+	url = https://github.com/Askinkaty/errant/
