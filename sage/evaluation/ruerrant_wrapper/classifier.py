@@ -120,13 +120,17 @@ def get_edit_strings(source: str, correction: str,
             else:
                 correction_char = source[edit[1]].lower()
         else:
-            if source[edit[1]].isupper():
+            if edit[0] == "delete":
+                correction_char = ""
+            elif edit[0] == "insert":
+                correction_char = correction[edit[2]]
+            elif source[edit[1]].isupper():
                 correction_char = correction[edit[2]].upper()
             else:
                 correction_char = correction[edit[2]].lower()
         if edit[0] == "replace":
-            separated_edits[edit_type] = curr_src[:edit[1]] + correction_char + \
-                curr_src[edit[1] + 1:]
+            separated_edits[edit_type] = curr_src[:edit[1] + shift] + correction_char + \
+                curr_src[edit[1]+shift + 1:]
         elif edit[0] == "delete":
             separated_edits[edit_type] = curr_src[:edit[1] + shift] + \
                 curr_src[edit[1]+shift + 1:]

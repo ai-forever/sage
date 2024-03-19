@@ -376,6 +376,72 @@ class TestScorerEvaluation(unittest.TestCase):
         }
         self.assertEqual(res, res_gold)
 
+    def test_different_answer(self):
+        res = self.scorer_with_errant.score(
+            ["раз"],
+            ["Два"],
+            ["три"],
+            metrics=["errant"])
+        res_gold = {
+            "SPELL_Precision": 0.0,
+            "SPELL_Recall": 0.0,
+            "SPELL_F1": 0.0,
+            "CASE_Precision": 100.0,
+            "CASE_Recall": 100.0,
+            "CASE_F1": 100.0,
+            "PUNCT_Precision": 100.0,
+            "PUNCT_Recall": 100.0,
+            "PUNCT_F1": 100.0,
+            "YO_Precision": 100.0,
+            "YO_Recall": 100.0,
+            "YO_F1": 100.0,
+        }
+        self.assertEqual(res, res_gold)
+
+    def test_different_answer_punct(self):
+        res = self.scorer_with_errant.score(
+            ["Кейс ее ."],
+            ["кейс её !"],
+            ["другие слова"],
+            metrics=["errant"])
+        res_gold = {
+            "CASE_Precision": 100.0,
+            "CASE_Recall": 0.0,
+            "CASE_F1": 0.0,
+            "YO_Precision": 100.0,
+            "YO_Recall": 0.0,
+            "YO_F1": 0.0,
+            "SPELL_Precision": 0.0,
+            "SPELL_Recall": 100.0,
+            "SPELL_F1": 0.0,
+            "PUNCT_Precision": 100.0,
+            "PUNCT_Recall": 0.0,
+            "PUNCT_F1": 0.0,
+        }
+        self.assertEqual(res, res_gold)
+
+    def test_sent13(self):
+        res = self.scorer_with_errant.score(
+            ['бог угрозами транслируемыми моск'],
+            ['Бог угрозами, транслируемыми мозг.'],
+            ['Бог угрозами, транслируемыми Моску.'],
+            metrics=["errant"])
+        res_gold = {
+            "CASE_Precision": 50.0,
+            "CASE_Recall": 100.0,
+            "CASE_F1": 66.67,
+            "YO_Precision": 100.0,
+            "YO_Recall": 100.0,
+            "YO_F1": 100.0,
+            "SPELL_Precision": 0.0,
+            "SPELL_Recall": 0.0,
+            "SPELL_F1": 0.0,
+            "PUNCT_Precision": 100.0,
+            "PUNCT_Recall": 100.0,
+            "PUNCT_F1": 100.0,
+        }
+        self.assertEqual(res, res_gold)
+
 
 if __name__ == "__main__":
     unittest.main()

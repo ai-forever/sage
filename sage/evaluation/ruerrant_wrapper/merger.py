@@ -85,9 +85,6 @@ def process_seq(seq: list[tuple], alignment: Alignment) -> list[tuple]:
         return seq
     # Get the ops for the whole sequence
     ops = [op[0] for op in seq]
-    # Merge all D xor I ops. (95% of human multi-token edits contain S).
-    if set(ops) == {"D"} or set(ops) == {"I"}:
-        return merge_edits(seq)
 
     # Get indices of all start-end combinations in the seq: 012 = 01, 02, 12
     combos = list(itertools.combinations(range(0, len(seq)), 2))
@@ -98,6 +95,9 @@ def process_seq(seq: list[tuple], alignment: Alignment) -> list[tuple]:
         # Ignore ranges that do NOT contain a substitution, deletion or insertion.
         if not any(type_ in ops[start:end + 1] for type_ in ["D", "I", "S"]):
             continue
+        # Merge all D xor I ops. (95% of human multi-token edits contain S).
+        if set(ops[start:end + 1]) == {"D"} or set(ops[start:end + 1]) == {"I"}:
+            return merge_edits(seq)
         # Get the tokens in orig and cor.
         o = alignment.orig[seq[start][1]:seq[end][2]]
         c = alignment.cor[seq[start][3]:seq[end][4]]
