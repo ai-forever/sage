@@ -97,7 +97,9 @@ def process_seq(seq: list[tuple], alignment: Alignment) -> list[tuple]:
             continue
         # Merge all D xor I ops. (95% of human multi-token edits contain S).
         if set(ops[start:end + 1]) == {"D"} or set(ops[start:end + 1]) == {"I"}:
-            return merge_edits(seq)
+            return (process_seq(seq[:start], alignment)
+                    + merge_edits(seq[start:end + 1])
+                    + process_seq(seq[end + 1:], alignment))
         # Get the tokens in orig and cor.
         o = alignment.orig[seq[start][1]:seq[end][2]]
         c = alignment.cor[seq[start][3]:seq[end][4]]
@@ -131,7 +133,7 @@ def process_seq(seq: list[tuple], alignment: Alignment) -> list[tuple]:
         # Merge whitespace/hyphens: [acat -> a cat], [sub - way -> subway]
         s_str = re.sub("['-]", "", "".join([tok.lower_ for tok in o]))
         t_str = re.sub("['-]", "", "".join([tok.lower_ for tok in c]))
-        if s_str == t_str:
+        if s_str == t_str or s_str.replace(" ", "") == t_str.replace(" ", ""):
             return (process_seq(seq[:start], alignment)
                     + merge_edits(seq[start:end + 1])
                     + process_seq(seq[end + 1:], alignment))

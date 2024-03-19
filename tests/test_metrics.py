@@ -271,6 +271,76 @@ class TestRuErrantErrorAnnotation(unittest.TestCase):
         ]
         self.assertEqual(self.scorer.annotate_errors(source, correction), errors_true)
 
+    def test_md_links(self):
+        source = self.scorer.annotator.parse("Версии именуются согласо [Semantic Versioning 2.0.0](http://semver.org).")
+        correction = self.scorer.annotator.parse("Версии именуются согласно [Semantic Versioning 2.0.0] (http://semver.org).")
+        errors_true = [
+            [2, 3, "SPELL", "согласно", 0],
+            [7, 8, "PUNCT", "] (", 0],
+        ]
+        self.assertEqual(self.scorer.annotate_errors(source, correction), errors_true)
+
+    def test_md_links_long(self):
+        source = self.scorer.annotator.parse("Версии именуются согласо [Semantic Versioning 2.0.0](http://semver.org/page/page.html).")
+        correction = self.scorer.annotator.parse("Версии именуются согласно [Semantic Versioning 2.0.0] (http://semver.org/page/pagt.html).")
+        errors_true = [
+            [2, 3, "SPELL", "согласно", 0],
+            [7, 8, "PUNCT", "] (", 0],
+            [8, 9, "SPELL", "http://semver.org/page/pagt.html", 0],
+        ]
+        self.assertEqual(self.scorer.annotate_errors(source, correction), errors_true)
+
+    def test_gh1(self):
+        source = self.scorer.annotator.parse('    "clipboardError": "Ошибка. Скорее всего ваш браузер не поодерживает данную функциональность",')
+        correction = self.scorer.annotator.parse('    "clipboarderror": "Ошибка. Скорее всего, ваш браузер не поддерживает данную функциональность".')
+        errors_true = [
+            [2, 3, "CASE", "clipboarderror", 0],
+            [10, 10, "PUNCT", ",", 0],
+            [13, 14, "SPELL", "поддерживает", 0],
+            [17, 18, "PUNCT", ".", 0],
+        ]
+        self.assertEqual(self.scorer.annotate_errors(source, correction), errors_true)
+
+    def test_gh2(self):
+        source = self.scorer.annotator.parse('    "clipboardError": "Ошибка. Скорее всего ваш браузер не поодерживает данную функциональность",')
+        correction = self.scorer.annotator.parse('"clipboardError": "ошибка". Скорее всего, ваш браузер не поддерживает данную функциональность.')
+        errors_true = [
+            [0, 1, "PUNCT", "", 0],
+            [6, 7, "CASE", "ошибка", 0],
+            [7, 7, "PUNCT", '"', 0],
+            [10, 10, "PUNCT", ",", 0],
+            [13, 14, "SPELL", "поддерживает", 0],
+            [16, 18, "PUNCT", ".", 0],
+        ]
+        self.assertEqual(self.scorer.annotate_errors(source, correction), errors_true)
+
+    # def test_gh3(self):
+    #     source = self.scorer.annotator.parse('  - Недостатки: время ожидания квартиры в зависимости от фирмы и района может быть достаточно долгим Wohnungsgenossenschaftenв Берлине [здесь](http://www.berlin.de/special/immobilien-und-wohnen/adressen/wohnungsbaugenossenschaft/)')
+    #     correction = self.scorer.annotator.parse(' Недостатки: время ожидания квартиры в зависимости от фирмы и района может быть достаточно долгим. Wohnungsgenossenschaften в Берлине здесь: http://www.berlin.de/special/immobilien-und-wohnen/addressen/wohnungsbaugenossenschaft/.')
+    #     errors_true = [
+    #         [0, 2, "PUNCT", " ", 0],
+    #         [17, 17, "PUNCT", ".", 0],
+    #         [17, 18, "SPELL", "Wohnungsgenossenschaften в", 0],
+    #         [19, 20, "PUNCT", "", 0],
+    #         [21, 22, "PUNCT", ":", 0],
+    #         [22, 27, "SPELL", "http://www.berlin.de/special/immobilien-und-wohnen/addressen/wohnungsbaugenossenschaft/", 0],
+    #         [27, 28, "PUNCT", ".", 0],
+    #     ]
+    #     self.assertEqual(self.scorer.annotate_errors(source, correction), errors_true)
+
+    def test_gh4(self):
+        source = self.scorer.annotator.parse('              "*Перейди в ветку с именем \\"master\\" в моём локальном репозитории, возьми все коммиты, и затем перейди на ветку \\"master\\" на удалённом репозитории \\"origin.\\". На этоу удалённую ветку скопируй все отсутствующие коммиты, которые есть у меня, и скажи, когда ты закончишь.*",')
+        correction = self.scorer.annotator.parse('Переходи в ветку с именем \\"master\\" в моём локальном репозитории, возьми все коммиты и затем перейди на ветку \\"master\\" на удалённом репозитории \\"origin\\". На эту удалённую ветку скопируй все отсутствующие коммиты, которые есть у меня, и скажи, когда ты закончишь.')
+        errors_true = [
+            [0, 3, "PUNCT", "", 0],
+            [3, 4, "SPELL", "Переходи", 0],
+            [20, 21, "PUNCT", "", 0],
+            [35, 36, "PUNCT", "", 0],
+            [40, 41, "SPELL", "эту", 0],
+            [60, 63, "PUNCT", "", 0],
+        ]
+        self.assertEqual(self.scorer.annotate_errors(source, correction), errors_true)
+
 
 class TestScorerLoadingAndRunning(unittest.TestCase):
 
@@ -405,7 +475,7 @@ class TestScorerEvaluation(unittest.TestCase):
             ["другие слова"],
             metrics=["errant"])
         res_gold = {
-            "CASE_Precision": 100.0,
+            "CASE_Precision": 0.0,  # 100.0
             "CASE_Recall": 0.0,
             "CASE_F1": 0.0,
             "YO_Precision": 100.0,
@@ -414,7 +484,7 @@ class TestScorerEvaluation(unittest.TestCase):
             "SPELL_Precision": 0.0,
             "SPELL_Recall": 100.0,
             "SPELL_F1": 0.0,
-            "PUNCT_Precision": 100.0,
+            "PUNCT_Precision": 0.0,
             "PUNCT_Recall": 0.0,
             "PUNCT_F1": 0.0,
         }
@@ -422,9 +492,9 @@ class TestScorerEvaluation(unittest.TestCase):
 
     def test_sent13(self):
         res = self.scorer_with_errant.score(
-            ['бог угрозами транслируемыми моск'],
-            ['Бог угрозами, транслируемыми мозг.'],
-            ['Бог угрозами, транслируемыми Моску.'],
+            ["бог угрозами транслируемыми моск"],
+            ["Бог угрозами, транслируемыми мозг."],
+            ["Бог угрозами, транслируемыми Моску."],
             metrics=["errant"])
         res_gold = {
             "CASE_Precision": 50.0,
