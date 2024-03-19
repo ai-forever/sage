@@ -11,7 +11,7 @@ from collections import defaultdict
 
 import numpy as np
 import timeout_decorator
-from tqdm import tqdm
+from tqdm.auto import tqdm
 
 
 class TimeOutValidation(Exception):

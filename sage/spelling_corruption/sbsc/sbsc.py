@@ -27,7 +27,7 @@ from typing import List, Dict, Optional, Union
 
 import numpy as np
 import pandas as pd
-from tqdm import tqdm
+from tqdm.auto import tqdm
 
 from .model import Model
 from .labeler import process_mistypings
