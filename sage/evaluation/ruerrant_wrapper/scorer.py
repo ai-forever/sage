@@ -67,7 +67,9 @@ class RuErrantScorer:
             classified_edits.extend(self.annotator.classify(edit))
         return sorted(classified_edits, key=lambda x: (x[0], x[2]))
 
-    def evaluate(self, sources: Iterable[str], corrections: Iterable[str],
+    def evaluate(self,
+                 sources: Iterable[str],
+                 corrections: Iterable[str],
                  answers: Iterable[str]) -> dict[str, tuple[float, float, float]]:
         """
         Evaluates iterables of sources, hyp and ref corrections with ERRANT metric.
@@ -85,7 +87,8 @@ class RuErrantScorer:
         best_dict = Counter({"tp": 0, "fp": 0, "fn": 0})
         best_cats = {}
         sents = zip(sources, corrections, answers)
-        for sent_id, sent in enumerate(tqdm(sents, desc="Calculating errant metric")):
+        pb = tqdm(sents, desc="Calculating errant metric", total=len(sources))
+        for sent_id, sent in enumerate(pb):
             src = self.annotator.parse(sent[0])
             ref = self.annotator.parse(sent[1])
             hyp = self.annotator.parse(sent[2])
