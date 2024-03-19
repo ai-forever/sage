@@ -10,6 +10,7 @@ from __future__ import annotations
 import re
 from collections import Counter, namedtuple
 from typing import Iterable
+from tqdm.auto import tqdm
 
 from errant.annotator import Annotator
 from errant.commands.compare_m2 import process_edits
@@ -84,7 +85,7 @@ class RuErrantScorer:
         best_dict = Counter({"tp": 0, "fp": 0, "fn": 0})
         best_cats = {}
         sents = zip(sources, corrections, answers)
-        for sent_id, sent in enumerate(sents):
+        for sent_id, sent in enumerate(tqdm(sents, desc="Calculating errant metric")):
             src = self.annotator.parse(sent[0])
             ref = self.annotator.parse(sent[1])
             hyp = self.annotator.parse(sent[2])
