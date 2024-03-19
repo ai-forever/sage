@@ -49,7 +49,7 @@ def get_edit_info(toks):
 def get_one_sided_type(o_toks, c_toks):
     """Classifies a zero-to-one or one-to-zero error based on a token list."""
     pos_list, _, _ = get_edit_info(o_toks if o_toks else c_toks)
-    if "PUNCT" in pos_list:
+    if "PUNCT" in pos_list or "SPACE" in pos_list:
         return {"PUNCT": c_toks[0].text if c_toks else ""}
     return {"SPELL": c_toks[0].text if c_toks else ""}
 
@@ -77,6 +77,8 @@ def get_two_sided_type(o_toks, c_toks) -> dict[str, str]:
             separated_edits = get_edit_strings(source_w, correct_w, edits_classified)
             return separated_edits
     # one-to-many and many-to-one cases
+    if all(char in punctuation + " " for char in o_toks.text + c_toks.text):
+        return {"PUNCT": c_toks.text}
     joint_corr_str = " ".join([tok.text for tok in c_toks])
     joint_corr_str = joint_corr_str.replace("- ", "-").replace(" -", "-")
     return {"SPELL": joint_corr_str}

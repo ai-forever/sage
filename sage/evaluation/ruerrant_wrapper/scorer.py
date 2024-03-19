@@ -7,18 +7,38 @@ error classification and are described in detail in the readme.
 
 from __future__ import annotations
 
+import re
 from collections import Counter, namedtuple
 from typing import Iterable
 
-import spacy
 from errant.annotator import Annotator
 from errant.commands.compare_m2 import process_edits
 from errant.commands.compare_m2 import evaluate_edits
 from errant.commands.compare_m2 import merge_dict
 from errant.edit import Edit
+import spacy
+from spacy.tokenizer import Tokenizer 
+from spacy.util import compile_prefix_regex, compile_infix_regex, compile_suffix_regex 
 
 from sage.evaluation.ruerrant_wrapper import classifier
 from sage.evaluation.ruerrant_wrapper import merger
+
+
+def update_spacy_tokenizer(nlp):
+    """
+    Changes Spacy tokenizer to parse additional patterns.
+    """
+    infix_re = compile_infix_regex(nlp.Defaults.infixes[:-1] + ["\]\("])
+    simple_url_re = re.compile(r'''^https?://''')
+    nlp.tokenizer = Tokenizer(
+        nlp.vocab,
+        prefix_search=compile_prefix_regex(nlp.Defaults.prefixes + ['\\\\\"']).search,
+        suffix_search=compile_suffix_regex(nlp.Defaults.suffixes + ['\\\\']).search,
+        infix_finditer=infix_re.finditer,
+        token_match=None,
+        url_match=simple_url_re.match
+    )
+    return nlp
 
 
 class RuErrantScorer:
@@ -26,7 +46,7 @@ class RuErrantScorer:
 
     def __init__(self) -> None:
         self.annotator = Annotator("ru",
-                                   nlp=spacy.load("ru_core_news_lg"),
+                                   nlp=update_spacy_tokenizer(spacy.load("ru_core_news_lg")),
                                    merger=merger,
                                    classifier=classifier)
 
