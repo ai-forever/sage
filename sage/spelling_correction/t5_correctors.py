@@ -10,7 +10,7 @@ To load a model:
 
 import os
 from typing import List, Optional, Union, Any
-from tqdm import tqdm
+from tqdm.auto import tqdm
 from transformers import T5ForConditionalGeneration, AutoTokenizer
 
 from .corrector import Corrector

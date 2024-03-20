@@ -10,7 +10,7 @@ To load a model:
 
 import os
 from typing import List, Optional, Union, Any
-from tqdm import tqdm
+from tqdm.auto import tqdm
 from transformers import M2M100ForConditionalGeneration
 from transformers.models.m2m_100.tokenization_m2m_100 import M2M100Tokenizer
 

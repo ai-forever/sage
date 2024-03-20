@@ -10,7 +10,7 @@ import string
 from typing import List, Dict
 
 import numpy as np
-from tqdm import tqdm
+from tqdm.auto import tqdm
 
 
 class TyposTypes(enum.Enum):

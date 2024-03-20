@@ -1,2 +1,0 @@
-./wheels/augmentex-1.0.3-py3-none-any.whl
-git+https://github.com/Askinkaty/errant/@4183e57
