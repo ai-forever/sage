@@ -58,7 +58,10 @@ def get_two_sided_type(o_toks, c_toks) -> dict[str, str]:
     """Classifies a one-to-one or one-to-many or many-to-one error based on token lists."""
     # one-to-one cases
     if len(o_toks) == len(c_toks) == 1:
-        if o_toks[0].text in punctuation + "..." and c_toks[0].text in punctuation + "...":
+        if (
+            all(char in punctuation + " " for char in o_toks[0].text) and 
+            all(char in punctuation + " " for char in c_toks[0].text)
+        ):
             return {"PUNCT": c_toks[0].text}
         source_w, correct_w = o_toks[0].text, c_toks[0].text
         if source_w != correct_w:
