@@ -22,11 +22,11 @@ class TestEvaluationKit(unittest.TestCase):
         self.assertDictEqual(metrics, expected_metrics)
 
     def test_scorer_ruspelleval_only(self):
-        metrics = self.scorer.score(self.sources, self.corrections, self.answers, metrics=["words"])
+        metrics = self.scorer.score(self.sources, self.corrections, self.answers, metrics=["ruspelleval"])
         self.assertDictEqual(metrics, {"Precision": 100.0, "Recall": 50.0, "F1": 66.67})
 
     def test_scorer_errant_ruspelleval(self):
-        metrics = self.scorer.score(self.sources, self.corrections, self.answers, metrics=["errant", "words"])
+        metrics = self.scorer.score(self.sources, self.corrections, self.answers, metrics=["errant", "ruspelleval"])
         expected_metrics = {
             "CASE_Precision": 100.0, "CASE_Recall": 50.0, "CASE_F1": 66.67,
             "YO_Precision": 100.0, "YO_Recall": 50.0, "YO_F1": 66.67,
@@ -41,7 +41,7 @@ class TestEvaluationKit(unittest.TestCase):
         self.assertRaises(
             AttributeError,
             scorer.score,
-            **{"sources": self.sources, "corrections": self.corrections, "answer": self.answers, "metrics": ["errant"]}
+            **{"sources": self.sources, "corrections": self.corrections, "answers": self.answers, "metrics": ["errant"]}
         )
 
 
