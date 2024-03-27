@@ -16,8 +16,8 @@ class DatasetsAvailable(enum.Enum):
     GitHubTypoCorpusRu = "Github commits. For more see `ai-forever/spellcheck_punctuation_benchmark`."
 
     MultidomainGold_orth = "Multidomain gold dataset orthography only. For more see `ai-forever/spellcheck_benchmark`."
-    RUSpellRU_v1_orth = "Social media texts and blogs orthography only. For more see `ai-forever/spellcheck_benchmark`."
-    MedSpellchecker_v1_orth = "Medical anamnesis orthography only. For more see `ai-forever/spellcheck_benchmark`."
+    RUSpellRU_orth = "Social media texts and blogs orthography only. For more see `ai-forever/spellcheck_benchmark`."
+    MedSpellchecker_orth = "Medical anamnesis orthography only. For more see `ai-forever/spellcheck_benchmark`."
     GitHubTypoCorpusRu_orth = "Github commits orthography only. For more see `ai-forever/spellcheck_benchmark`."
 
 
@@ -33,6 +33,7 @@ def load_available_dataset_from_hf(
     source_collection = "spellcheck_punctuation_benchmark"
     if dataset_name[-4:] == "orth":
         source_collection = "spellcheck_benchmark"
+        dataset_name = dataset_name[:-5]
     dataset = load_dataset("ai-forever/{}".format(source_collection), dataset_name, split=split)
     if split is None:
         dataset = pd.concat([dataset[split].to_pandas() for split in dataset.keys()]).reset_index(drop=True)
