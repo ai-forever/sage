@@ -26,7 +26,7 @@ if __name__ == "__main__":
     sage_fredt5_distilled = T5ModelForSpellingCorruption.from_pretrained(
         AvailableCorrectors.sage_fredt5_distilled_95m.value)
     sage_mt5_large = T5ModelForSpellingCorruption.from_pretrained(AvailableCorrectors.sage_mt5_large.value)
-    sage_m2m_100 = RuM2M100ModelForSpellingCorrection.from_pretrained(AvailableCorrectors.sage_m2m100_1B)
+    sage_m2m_100 = RuM2M100ModelForSpellingCorrection.from_pretrained(AvailableCorrectors.sage_m2m100_1B.value)
 
     print("\n------------------------------------------------------------------\n")
 

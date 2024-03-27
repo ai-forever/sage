@@ -373,10 +373,10 @@ class TestScorerEvaluation(unittest.TestCase):
 
     def test_evaluation_empty(self):
         with self.assertRaises(ValueError):
-            self.scorer_with_errant.score([""], [""], [""], metrics=["words"])
+            self.scorer_with_errant.score([""], [""], [""], metrics=["ruspelleval"])
 
     def test_evaluation_words(self):
-        res = self.scorer_with_errant.score(["карова"], ["Корова"], ["корова"], metrics=["words"])
+        res = self.scorer_with_errant.score(["карова"], ["Корова"], ["корова"], metrics=["ruspelleval"])
         res_gold = {
             "Precision": 100,
             "Recall": 100,
