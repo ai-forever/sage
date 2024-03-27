@@ -1,7 +1,7 @@
 import unittest
 
 from sage.evaluation.ruerrant_wrapper.scorer import RuErrantScorer
-from sage.evaluation.scorer import Scorer
+from sage.evaluation import Scorer
 
 
 class TestRuErrantErrorAnnotation(unittest.TestCase):

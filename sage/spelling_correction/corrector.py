@@ -21,7 +21,7 @@ from typing import List, Union, Dict, Optional, Any
 
 import pandas as pd
 
-from ..evaluation.evaluate import evaluation
+from ..evaluation.scorer import Scorer
 from ..utils.data_load_utils import load_available_dataset_from_hf, DatasetsAvailable
 
 
@@ -29,7 +29,12 @@ datasets_available = [dataset.name for dataset in DatasetsAvailable]
 
 
 class AvailableCorrectors(enum.Enum):
-    """Available models for spelling correction"""
+    """Available models for spelling and punctuation correction"""
+
+    sage_fredt5_large = "ai-forever/sage-fredt5-large"
+    sage_fredt5_distilled_95m = "ai-forever/sage-fredt5-distilled-95m"
+    sage_m2m100_1B = "ai-forever/sage-m2m100-1.2B"
+    sage_mt5_large = "ai-forever/sage-mt5-large"
 
     m2m100_1B = "ai-forever/RuM2M100-1.2B"
     m2m100_418M = "ai-forever/RuM2M100-418M"
@@ -53,6 +58,7 @@ class Corrector(metaclass=ABCMeta):
     def evaluate(
             self,
             dataset_name_or_path: Optional[Union[str, os.PathLike]],
+            metrics: List,
             batch_size: int,
             prefix: str = "",
             dataset_split: str = "test",
@@ -103,8 +109,9 @@ class Corrector(metaclass=ABCMeta):
             num_sequences = generation_params["num_return_sequences"]
             answers = [batch_answers[::num_sequences] for batch_answers in answers]
         answers = sum(answers, [])
-        metrics = evaluation(sources, corrections, answers)
-        return metrics
+        scorer = Scorer("errant" in metrics)
+        metrics_dict = scorer.score(sources, corrections, answers, metrics)
+        return metrics_dict
 
     @abstractmethod
     def batch_correct(

@@ -10,6 +10,8 @@ To load a model:
 
 import os
 from typing import List, Optional, Union, Any
+
+import torch
 from tqdm.auto import tqdm
 from transformers import T5ForConditionalGeneration, AutoTokenizer
 
@@ -27,7 +29,7 @@ class T5ModelForSpellingCorruption(Corrector):
     def from_pretrained(cls, model_name_or_path: Union[str, os.PathLike]):
         engine = cls(model_name_or_path)
         engine.model = T5ForConditionalGeneration.from_pretrained(model_name_or_path)
-        engine.tokenizer = AutoTokenizer.from_pretrained(model_name_or_path, eos_token="</s>")
+        engine.tokenizer = AutoTokenizer.from_pretrained(model_name_or_path)
 
         return engine
 
@@ -47,16 +49,15 @@ class T5ModelForSpellingCorruption(Corrector):
         pb = tqdm(total=len(batches))
         device = self.model.device
         for batch in batches:
-            init_encodings = self.tokenizer.batch_encode_plus(
-                batch, max_length=None, padding="longest", truncation=False, return_tensors='pt')
             batch_prefix = [prefix + sentence for sentence in batch]
-            encodings = self.tokenizer.batch_encode_plus(
-                batch_prefix, max_length=None, padding="longest", truncation=False, return_tensors='pt')
-            for k, v in encodings.items():
-                encodings[k] = v.to(device)
-            generated_tokens = self.model.generate(
-                **encodings, **generation_params, max_length=init_encodings["input_ids"].shape[1] + 1)
-            ans = self.tokenizer.batch_decode(generated_tokens, skip_special_tokens=True)
+            with torch.inference_mode():
+                encodings = self.tokenizer.batch_encode_plus(
+                    batch_prefix, max_length=None, padding="longest", truncation=False, return_tensors='pt')
+                for k, v in encodings.items():
+                    encodings[k] = v.to(device)
+                generated_tokens = self.model.generate(
+                    **encodings, **generation_params, max_length=encodings['input_ids'].size(1) * 1.5)
+                ans = self.tokenizer.batch_decode(generated_tokens, skip_special_tokens=True)
             result.append(ans)
             pb.update(1)
         return result

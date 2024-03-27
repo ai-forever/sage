@@ -19,7 +19,7 @@ requirements = [
     "datasets",
     "timeout_decorator",
     "matplotlib>=3.2,<3.7",
-    "torch>=1.0,<=2.2.0",
+    "torch>=1.9.0,<=2.2.0",
     "transformers>=4.20.0",
     f"augmentex @ file://{augmentex_path}"
 ]

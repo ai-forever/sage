@@ -412,16 +412,6 @@ def output_differences(diff_file, source_sents, correct_sents, answer_sents,
     return
 
 
-def test(task=1):
-    if task == 0:
-        first_sent = ['фотка', 'классная', 'кстате', 'хоть', 'и', 'не', 'по', 'теме']
-        second_sent = ['фотка', 'классная', 'кстати', 'хотя', 'не', 'по', 'теме']
-        align_sents(first_sent, second_sent, replace_cost=1.9)
-    elif task == 1:
-        first, second = 'жж', 'ж'
-        align_sents(first, second)
-
-
 def evaluation(
     sources: List[str],
     corrections: List[str],

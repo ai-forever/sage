@@ -4,7 +4,7 @@ from __future__ import annotations
 from typing import Iterable
 
 from sage.evaluation.ruerrant_wrapper.scorer import RuErrantScorer
-from sage.evaluation.evaluate import evaluation as calculate_word_metric
+from sage.evaluation.ruspelleval import evaluation as calculate_ruspelleval_metric
 
 
 class Scorer:
@@ -46,11 +46,11 @@ class Scorer:
                 if metric == "errant":
                     if self.errant is None:
                         raise AttributeError(
-                            "You called for 'errant' metric which has not been loaded.",
+                            "You called for `errant` metric which has not been loaded.",
                             "To use, reinitialize the Scorer with `load_errant=True`.")
-                elif metric != "words":
+                elif metric != "ruspelleval":
                     raise ValueError(f"You provided a wrong metric name: `{metric}`.",
-                                     "Available metrics are: ['errant', 'words'].")
+                                     "Available metrics are: [`errant`, `ruspelleval`].")
         else:
             raise ValueError("The `metrics` argument must contain at least one metric name.")
         if isinstance(sources, str) or isinstance(corrections, str) or isinstance(answers, str):
@@ -69,6 +69,6 @@ class Scorer:
                     for metric_name, metric_value in zip(metrics, values):
                         result_dict[f"{cat}_{metric_name}"] = round(float(metric_value) * 100, 2)
                 result.update(result_dict)
-            elif metric == "words":
-                result.update(calculate_word_metric(sources, corrections, answers))
+            elif metric == "ruspelleval":
+                result.update(calculate_ruspelleval_metric(sources, corrections, answers))
         return result
