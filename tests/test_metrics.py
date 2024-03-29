@@ -284,9 +284,11 @@ class TestRuErrantErrorAnnotation(unittest.TestCase):
         source = self.scorer.annotator.parse("Версии именуются согласо [Semantic Versioning 2.0.0](http://semver.org/page/page.html).")
         correction = self.scorer.annotator.parse("Версии именуются согласно [Semantic Versioning 2.0.0] (http://semver.org/page/pagt.html).")
         errors_true = [
-            [2, 3, "SPELL", "согласно", 0],
-            [7, 8, "PUNCT", "] (", 0],
-            [8, 9, "SPELL", "http://semver.org/page/pagt.html", 0],
+            [2, 3, 'SPELL', 'согласно', 0],
+            [7, 8, 'PUNCT', ']', 0],
+            [8, 11, 'PUNCT', '', 0],
+            [11, 12, 'PUNCT', '(', 0],
+            [12, 13, 'SPELL', 'http://semver.org/page/pagt.html', 0]
         ]
         self.assertEqual(self.scorer.annotate_errors(source, correction), errors_true)
 

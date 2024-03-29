@@ -68,7 +68,7 @@ if __name__ == "__main__":
 
     print("\nsage_mt5_large: \n")
     print("\n".join(["{}: {}".format(k, v[0]) for k, v in zip(
-        example_sentences_ru_en, sage_mt5_large.batch_correct(example_sentences_ru, 1))]))
+        example_sentences_ru_en, sage_mt5_large.batch_correct(example_sentences_ru_en, 1))]))
 
     print("\nsage_m2m_100: \n")
     print("\n".join(["{}: {}".format(k, v[0]) for k, v in zip(

@@ -17,6 +17,7 @@ requirements = [
     "requests",
     "sentencepiece",
     "datasets",
+    "protobuf",
     "timeout_decorator",
     "matplotlib>=3.2,<3.7",
     "torch>=1.9.0,<=2.2.0",

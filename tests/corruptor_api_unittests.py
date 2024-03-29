@@ -8,7 +8,7 @@ from sage.utils.data_load_utils import load_available_dataset_from_hf
 from sage.utils.utils import draw_and_save_errors_distributions_comparison_charts
 from sage.spelling_corruption import WordAugCorruptor, CharAugCorruptor, SBSCCorruptor
 
-SEED = 42
+SEED = 0
 
 
 class CorruptorApiTests(unittest.TestCase):
@@ -19,7 +19,7 @@ class CorruptorApiTests(unittest.TestCase):
     ruspellru_stats, ruspellru_confusion_matrix, ruspellru_typos_cnt = process_mistypings(sources, corrections)
 
     def _draw_generated_distributions(self, corruptor, file_name):
-        spoiled_sentences = corruptor.batch_corrupt(self.corrections)
+        spoiled_sentences = corruptor.batch_corrupt(self.corrections, seed=SEED)
         ours_ruspellru_stats, ours_ruspellru_confusion_matrix, ours_ruspellru_typos_cnt = \
             process_mistypings(spoiled_sentences, self.corrections)
         draw_and_save_errors_distributions_comparison_charts(
