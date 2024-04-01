@@ -10,8 +10,8 @@ RuERRANT is an adaptation of the ERRANT metric ([repo](https://github.com/chrisj
 1. [our contribution] Introduced a simplified error correction typology:
     - `CASE`: spelling corrections including only character case change;
     - `PUNCT`: punctuation corrections;
-    - `YO`: spelling errors corrections regarding "е"/"ё" substitutions;
-    - `SPELL`: all other word-level spelling erro corrections.
+    - `YO`: spelling corrections regarding "е"/"ё" substitutions;
+    - `SPELL`: all other word-level spelling corrections.
 1. [our contribution] Introduced detection of multiple error correction types per word, e.g. "федор" -> "Фёдор" contains both CASE and YO corrections.
 1. [our contribution] Introduced detection of inner word punctuation corrections which covers joint ("AB") vs. hyphen ("A-B") vs. space ("A B") word spelling. Corrections of this type are attributed to the `SPELL` category.
 
