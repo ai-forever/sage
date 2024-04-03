@@ -1,6 +1,7 @@
 """Generic evaluator for spelling correction task."""
 from __future__ import annotations
 
+import warnings
 from typing import Iterable
 
 from sage.evaluation.ruerrant_wrapper.scorer import RuErrantScorer
@@ -56,9 +57,14 @@ class Scorer:
         if isinstance(sources, str) or isinstance(corrections, str) or isinstance(answers, str):
             raise ValueError("The `sources`, `corrections`, and `answers` arguments",
                              "must be iterables of strings.")
-        if "" in sources or "" in corrections or "" in answers:
+        if "" in sources or "" in corrections:
             # probably too greedy condition (spacy in errant cannot parse empty strings)
             raise ValueError("All input strings must not be empty.")
+        if "" in answers:
+            warnings.warn("Some of the answers are empty. They will be removed from the evaluation.", UserWarning)
+        sources = [source for source, answer in zip(sources, answers) if answer]
+        corrections = [correction for correction, answer in zip(corrections, answers) if answer]
+        answers = [answer for answer in answers if answer]
         result = {}
         for metric in metrics:
             if metric == "errant" and self.errant is not None:
