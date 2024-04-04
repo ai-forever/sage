@@ -82,7 +82,7 @@ cd sage
 pip install .
 ```
 
-To install extra requirements that you are going to need when working with ERRANT based metric, 
+To install extra requirements that you are going to need when working with ERRANT-based metric run
 ```commandline
 pip install -e ".[errant]"
 ```
@@ -496,7 +496,7 @@ We also provide functionality to evaluate the performance of spelling correction
 
 🎯 Currently two options are available:
 - [ruspelleval](https://www.dialog-21.ru/media/3427/sorokinaaetal.pdf);
-- [ERRANT](https://github.com/chrisjbryant/errant) based metric adapted for the Russian language;
+- [ERRANT](https://github.com/chrisjbryant/errant)-based metric adapted for the Russian language;
 
 Both algorithms output Precision, Recall and F1 scores that can be interpreted like the following:
 - **Precision**: one minus share of unnecessary amendments; 
