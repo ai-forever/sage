@@ -542,7 +542,7 @@ print(metrics)
 The metrics output by ERRANT based algorithm are indicated by the corresponding prefix, which refers to the specific type of errors:
 - *CASE*: erroneously used case;
 - *SPELL*: spelling and grammar errors;
-- *PUCNT*: punctuation errors;
+- *PUNCT*: punctuation errors;
 - *YO*: unnecessary replacement of "YO" (ё) letter;
 
 📌 Credit for evaluation script of ruspelleval metric goes to Aleksei Sorokin and his notable [work](https://www.dialog-21.ru/media/3427/sorokinaaetal.pdf) 
