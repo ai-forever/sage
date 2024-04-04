@@ -71,8 +71,8 @@ class Corrector(metaclass=ABCMeta):
         elif os.path.isdir(dataset_name_or_path):
             if os.path.isfile(os.path.join(dataset_name_or_path, "sources.txt")) and \
                     os.path.isfile(os.path.join(dataset_name_or_path, "corrections.txt")):
-                src_file = open(os.path.join(dataset_name_or_path, "sources.txt"))
-                corr_file = open(os.path.join(dataset_name_or_path, "corrections.txt"))
+                src_file = open(os.path.join(dataset_name_or_path, "sources.txt"), encoding="utf8")
+                corr_file = open(os.path.join(dataset_name_or_path, "corrections.txt"), encoding="utf8")
                 sources = src_file.read().split("\n")
                 corrections = corr_file.read().split("\n")
                 src_file.close()
