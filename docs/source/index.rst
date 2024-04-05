@@ -54,13 +54,23 @@ SAGE (Spell checking via Augmentation and Generative distribution Emulation) is
 a complete solution that you need when working on a spelling problem:
 
 💯 Spelling correction with State-of-the-art pre-trained 🤗Transformer models:
-  1️⃣ `M2M100-1.2B <https://huggingface.co/ai-forever/RuM2M100-1.2B>`_
+  1️⃣ `sage-fredt5-large <https://huggingface.co/ai-forever/sage-fredt5-large>`_
 
-  2️⃣ `M2M100-418M <https://huggingface.co/ai-forever/RuM2M100-418M>`_
+  2️⃣ `sage-fredt5-distilled-95m <https://huggingface.co/ai-forever/sage-fredt5-distilled-95m>`_
 
-  3️⃣ `FredT5-large <https://huggingface.co/ai-forever/FRED-T5-large-spell>`_
+  3️⃣ `sage-mt5-large <https://huggingface.co/ai-forever/sage-mt5-large>`_
 
-  4️⃣ `T5-large <https://huggingface.co/ai-forever/T5-large-spell>`_
+  4️⃣ `sage-m2m100-1.2B <https://huggingface.co/ai-forever/sage-m2m100-1.2B>`_
+
+  5️⃣ `T5-large <https://huggingface.co/ai-forever/T5-large-spell>`_
+
+  6️⃣ `M2M100-1.2B <https://huggingface.co/ai-forever/RuM2M100-1.2B>`_
+
+  7️⃣ `M2M100-418M <https://huggingface.co/ai-forever/RuM2M100-418M>`_
+
+  6️⃣ `FredT5-large <https://huggingface.co/ai-forever/FRED-T5-large-spell>`_
+
+
 
 🧩 **Augment your data with spelling corruption algorithms**
 
@@ -98,13 +108,24 @@ Installation
 
 Regular install
 ^^^^^^^^^^^^^^^
-
 .. code-block:: commandline
 
    git clone https://github.com/ai-forever/sage.git
    cd sage
    pip install .
-   pip install -r requirements.txt
+
+To install extra requirements that you are going to need when working with ERRANT-based metric run
+
+.. code-block:: commandline
+
+   pip install -e ".[errant]"
+
+or just
+
+.. code-block:: commandline
+
+   pip install -e .[errant]
+
 
 Editable install
 ^^^^^^^^^^^^^^^^
@@ -114,7 +135,8 @@ Editable install
    git clone https://github.com/ai-forever/sage.git
    cd sage
    pip install -e .
-   pip install -r requirements.txt
+
+and proceed with extra requirements install as above.
 
 Quick demo
 ----------
@@ -137,96 +159,100 @@ Lets spoil some text:
    corruptor = SBSCCorruptor.from_config(config)
 
    corruptor.corrupt(text, seed=1)
-   # 'Заветьте, не я это предложил!'
+   # 'Заиетьте, не я эт о пред ложил!'
 
 ... now with Augmentex:
 
 .. code-block:: python
 
-   import sage
-   from sage.spelling_corruption import WordAugConfig, WordAugCorruptor
+    import sage
+    from sage.spelling_corruption import WordAugConfig, WordAugCorruptor
 
-   text = "Заметьте, не я это предложил!"
+    text = "Заметьте, не я это предложил!"
 
-   # Instantiate WordAugCorruptor corruptor with a custom set of parameters
-   config = WordAugConfig(
-       min_aug=1,
-       max_aug=5,
-       unit_prob=0.4,
-   )
-   corruptor = WordAugCorruptor.from_config(config)
+    # Instantiate WordAugCorruptor corruptor with a custom set of parameters
+    config = WordAugConfig(
+        min_aug=1,
+        max_aug=5,
+        unit_prob=0.4,
+    )
+    corruptor = WordAugCorruptor.from_config(config)
 
-   corruptor.corrupt(text, seed=1)
-   # 'это не предложил! Заметьте, я'
+    corruptor.corrupt(text, seed=1)
+    # 'это не предложил! Заметьте, я'
 
 ... or for the English language:
 
 .. code-block:: python
 
-   import os
-   from sage.spelling_corruption import SBSCConfig, SBSCCorruptor
+    import os
+    from sage.spelling_corruption import SBSCConfig, SBSCCorruptor
 
-   text = "Screw you guys, I am going home. (c)"
+    text = "Screw you guys, I am going home. (c)"
 
-   # Instantiate SBSC corruptor from a JFLEG dataset
-   config = SBSCConfig(
-       lang="en",
-       reference_dataset_name_or_path=os.path.join("data", "example_data", "jfleg"),
-   )
-   corruptor = SBSCCorruptor.from_config(config)
+    # Instantiate SBSC corruptor from a JFLEG dataset
+    config = SBSCConfig(
+        lang="en",
+        reference_dataset_name_or_path=os.path.join("data", "example_data", "jfleg"),
+    )
+    corruptor = SBSCCorruptor.from_config(config)
 
-   corruptor.corrupt(text, seed=1)
-   # 'Screw you kuys, I am going home. (c)'
+    corruptor.corrupt(text, seed=1)
+    # 'Screw you kuys, I am going home. (c)'
 
 Now we can use our models to restore the initial text back:
 
 .. code-block:: python
 
-   from sage.spelling_correction import AvailableCorrectors
-   from sage.spelling_correction import RuM2M100ModelForSpellingCorrection, T5ModelForSpellingCorruption
+    from sage.spelling_correction import AvailableCorrectors
+    from sage.spelling_correction import RuM2M100ModelForSpellingCorrection, T5ModelForSpellingCorruption
 
-   text_ru = "Заветьте, не я это предложил!"
-   text_en = "Screw you kuys, I am going home. (c)"
+    text_ru = "Замтьте не я это предложил"
+    text_en = "Screw you kuys, I am going home. (c)"
 
-   corrector_1b = RuM2M100ModelForSpellingCorrection.from_pretrained(AvailableCorrectors.m2m100_1B.value)
-   corrector_en = T5ModelForSpellingCorruption.from_pretrained(AvailableCorrectors.ent5_large.value)
+    corrector_fred = T5ModelForSpellingCorruption.from_pretrained(AvailableCorrectors.sage_fredt5_large.value)
+    corrector_m2m = RuM2M100ModelForSpellingCorrection.from_pretrained(AvailableCorrectors.m2m100_1B.value)
+    corrector_en = T5ModelForSpellingCorruption.from_pretrained(AvailableCorrectors.ent5_large.value)
 
-   corrector_1b.correct(text_ru)
-   # ['Заметьте, не я это предложил!']
+    print(corrector_fred.correct(text_ru))
+    # ['Заметьте, не я это предложил.']
 
-   corrector_en.correct(text_en, prefix="grammar: ")
-   # ['Screw you guys, I am going home. (c)']
+    print(corrector_m2m.correct(text_ru))
+    # ['Заметьте не я это предложил']
+
+    print(corrector_en.correct(text_en, prefix="grammar: "))
+    # ['Screw you guys, I am going home. (c)']
 
 Evaluate performance of the models on open benchmarks for spelling correction:
 
 .. code-block:: python
 
-   import os
-   import torch
-   from sage.utils import DatasetsAvailable
-   from sage.spelling_correction import AvailableCorrectors
-   from sage.spelling_correction import RuM2M100ModelForSpellingCorrection, T5ModelForSpellingCorruption
+    import os
+    import torch
+    from sage.utils import DatasetsAvailable
+    from sage.spelling_correction import AvailableCorrectors
+    from sage.spelling_correction import T5ModelForSpellingCorruption
 
-   corrector_418m = RuM2M100ModelForSpellingCorrection.from_pretrained(AvailableCorrectors.m2m100_418M.value)
-   corrector_en = T5ModelForSpellingCorruption.from_pretrained(AvailableCorrectors.ent5_large.value)
+    corrector_fred_95m = T5ModelForSpellingCorruption.from_pretrained(AvailableCorrectors.sage_fredt5_distilled_95m.value)
+    corrector_mt5 = T5ModelForSpellingCorruption.from_pretrained(AvailableCorrectors.sage_mt5_large.value)
 
-   corrector_418m.model.to(torch.device("cuda:0"))
-   corrector_en.model.to(torch.device("cuda:0"))
+    corrector_fred_95m.model.to(torch.device("cuda:0"))
+    corrector_mt5.model.to(torch.device("cuda:0"))
 
-   metrics = corrector_418m.evaluate(DatasetsAvailable.RUSpellRU.name, batch_size=32)
-   print(metrics)
-   # {'Precision': 57.74, 'Recall': 61.18, 'F1': 59.41}
+    metrics = corrector_fred_95m.evaluate("RUSpellRU", metrics=["errant", "ruspelleval"], batch_size=32)
+    print(metrics)
+    # {'CASE_Precision': 94.41, 'CASE_Recall': 92.55, 'CASE_F1': 93.47, 'SPELL_Precision': 77.52, 'SPELL_Recall': 64.09, 'SPELL_F1': 70.17, 'PUNCT_Precision': 86.77, 'PUNCT_Recall': 80.59, 'PUNCT_F1': 83.56, 'YO_Precision': 46.21, 'YO_Recall': 73.83, 'YO_F1': 56.84, 'Precision': 83.48, 'Recall': 74.75, 'F1': 78.87}
 
-   metrics = corrector_en.evaluate(os.path.join("data", "example_data", "jfleg"), prefix="grammar: ", batch_size=32)
-   print(metrics)
-   # {'Precision': 83.43, 'Recall': 84.25, 'F1': 83.84}
+    metrics = corrector_mt5.evaluate("/content/sage/data/example_data/jfleg", metrics=["ruspelleval"], batch_size=16)
+    print(metrics)
+    # {'Precision': 75.94, 'Recall': 88.15, 'F1': 81.59}
 
 *NOTE*\ : if you are launching code snippet in Colab you'd probably end up with MEMORY ERROR, so manage evaluation 
 procedures so that you meet available device's restrictions. As a feasible workaround you can execute 
 
 .. code-block:: python
 
-   del corrector_418m.model
+   del corrector_fred_95m.model
 
 to free some space. 
 
@@ -238,7 +264,7 @@ to mimic human behaviour when making an error. While `Augmentex <#augmentex>`_ r
 errors and mistypings especially those committed while typing text on a keyboard. 
 
 🚀 Both methods proved their effectiveness for spelling correction systems and celebrated substantial **performance gains**
-fully reported in our `Paper <https://arxiv.org/abs/2308.09435>`_.
+fully reported in our `Paper <https://aclanthology.org/2024.findings-eacl.10/>`_.
 
 Statistic-based Spelling Corruption (SBSC)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -398,7 +424,7 @@ Spelling Correction
 -------------------
 
 Our methodology for obtaining model with optimal performance on spellchecking task is thoroughly described in our
-`Paper <https://arxiv.org/abs/2308.09435>`_. And the algorithm is simple and generally consists of two steps:
+`Paper <https://aclanthology.org/2024.findings-eacl.10/>`_. And the algorithm is simple and generally consists of two steps:
 
 
 * Pre-train model on extensive parallel corpus with synthetically generated errors;
@@ -407,16 +433,20 @@ Our methodology for obtaining model with optimal performance on spellchecking ta
 We use `Augmentex <#augmentex>`_ and `SBSC <#statistic-based-spelling-corruption-sbsc>`_ for both generating large synthetic corpora and augmenting datasets with natural errors. 
 We release 4 pre-trains of our models.
 
-We've 3 🤗Transformer models for Russian 🇷🇺:
+We've 6 🤗Transformer models for Russian 🇷🇺:
 
 
+* `sage-fredt5-large <https://huggingface.co/ai-forever/sage-fredt5-large>`_
+* `sage-fredt5-distilled-95m <https://huggingface.co/ai-forever/sage-fredt5-distilled-95m>`_
+* `sage-m2m100-1.2B <https://huggingface.co/ai-forever/sage-m2m100-1.2B>`_
 * `M2M100-1.2B <https://huggingface.co/ai-forever/RuM2M100-1.2B>`_
 * `M2M100-418M <https://huggingface.co/ai-forever/RuM2M100-418M>`_
 * `FredT5-large <https://huggingface.co/ai-forever/FRED-T5-large-spell>`_
 
-And one model for English 🇬🇧:
+And two model for English 🇬🇧:
 
 
+* `sage-mt5-large <https://huggingface.co/ai-forever/sage-mt5-large>`_
 * `T5-large <https://huggingface.co/ai-forever/T5-large-spell>`_
 
 Models for the Russian language have been pre-trained on combination of Russian Wikipedia and videos transcriptions with 
@@ -431,249 +461,212 @@ of `BEA60k <https://github.com/neuspell/neuspell/tree/master>`_.
 * **MultidomainGold**\ : examples from 7 text sources, including the open web, news, social media, reviews, subtitles, policy documents and literary works;
 * **MedSpellChecker**\ : texts with errors from medical anamnesis;
 * **GitHubTypoCorpusRu**\ : spelling errors and typos in commits from GitHub;
+* **BEA60K**\ : English spelling errors collected from several domains;
+* **JFLEG**\ : 1601 sentences in English, which contain about 2 thousand spelling errors;
 
 📈 Here we report evaluation of some setups:
 
 
-* Zero-shot evaluation of pre-trained (\ **Pre-train**\ ) checkpoints, which we publicly release;
-* Additional fine-tuning (\ **Pre-train + fine-tune**\ ) on the target dataset;
+* Zero-shot evaluation of pre-trained checkpoints;
+* Additional fine-tuning (ft.) on the target dataset;
 
-Full list of setups and corresponding performances are in the `Paper <https://arxiv.org/abs/2308.09435>`_.
+Full list of setups and corresponding performances are in the `Paper <https://aclanthology.org/2024.findings-eacl.10/>`_.
+
+**RUSpellRU**, **MultidomainGold**, **MedSpellChecker** and **GitHubTypoCorpusRu** come from `spellcheck_punctuation_benchmark <https://huggingface.co/datasets/ai-forever/spellcheck_punctuation_benchmark>`_.
+The benchmark accounts for both punctuation and spelling errors. For the simplicity and better representativeness we report results only for those models
+(`sage-fredt5-large <https://huggingface.co/ai-forever/sage-fredt5-large>`_, `sage-fredt5-distilled-95m <https://huggingface.co/ai-forever/sage-fredt5-distilled-95m>`_) that deal with both types of errors (the Russian language).
+The detailed metrics for other checkpoints can be found either in the `Paper <https://aclanthology.org/2024.findings-eacl.10/>`_, `post <ссылка на новый хабр>`_ or corresponding model card.
+
 
 *NOTE:* **MedSpellChecker** and **GitHubTypoCorpusRu** do not have train split, so their performance on 
 **Pre-train + fine-tune** setup is reported as a result of fine-tuning on combination of **RUSpellRU** and **MultidomainGold**
 datasets.
 
-.. list-table:: RUSpellRU Evaluation
-   :widths: 50 25 25 25
-   :header-rows: 1
+**RUSpellRU Evaluation**
 
-   * - Model
-     - Precision
-     - Recall
-     - F1
-   * - M2M100-1.2B (Pre-train)
-     - 59.4
-     - 43.3
-     - 50.1
-   * - M2M100-1.2B (Pre-train + fine-tune)
-     - 82.9
-     - 72.5
-     - **77.3**
-   * - M2M100-418M (Pre-train)
-     - 57.7
-     - 61.2
-     - 59.4
-   * - M2M100-418M (Pre-train + fine-tune)
-     - 81.8
-     - 63.4
-     - 71.4
-   * - FredT5-large (Pre-train)
-     - 58.5
-     - 42.4
-     - 49.2
-   * - FredT5-large (Pre-train + fine-tune)
-     - 55.1
-     - 73.2
-     - 62.9
-   * - ChatGPT text-davinci-003
-     - 55.9
-     - **75.3**
-     - 64.2
-   * - Yandex.Speller
-     - **83.0**
-     - 59.8
-     - 69.5
++---------------------------------+-------------+--------------+------------+------------+-------------+-----------+------------+-------------+-----------+
+| Model                           | Pr. (spell) | Rec. (spell) | F1 (spell) | Pr. (punc) | Rec. (punc) | F1 (punc) | Pr. (case) | Rec. (case) | F1 (case) |
++=================================+=============+==============+============+============+=============+===========+============+=============+===========+
+| sage-ai-service                 | 90.3        | 86.3         | 88.2       | 90.3       | 86.6        | 88.4      | 95.2       | 95.9        | 95.6      |
++---------------------------------+-------------+--------------+------------+------------+-------------+-----------+------------+-------------+-----------+
+| sage-fredt5-large               | 57.3        | 68.0         | 62.2       | 86.7       | 46.1        | 60.2      | 92.1       | 67.8        | 78.1      |
++---------------------------------+-------------+--------------+------------+------------+-------------+-----------+------------+-------------+-----------+
+| sage-fredt5-large (ft.)         | 88.4        | 80.9         | 84.5       | 88.2       | 85.3        | 86.8      | 95.5       | 94.0        | 94.7      |
++---------------------------------+-------------+--------------+------------+------------+-------------+-----------+------------+-------------+-----------+
+| sage-fredt5-distilled-95m (ft.) | 83.5        | 74.8         | 78.9       | 86.8       | 80.6        | 83.6      | 94.4       | 92.5        | 93.5      |
++---------------------------------+-------------+--------------+------------+------------+-------------+-----------+------------+-------------+-----------+
+| gpt-3.5-turbo                   | 33.6        | 58.5         | 42.7       | 85.9       | 64.6        | 73.7      | 84.9       | 73.9        | 79.0      |
++---------------------------------+-------------+--------------+------------+------------+-------------+-----------+------------+-------------+-----------+
+| gpt-4                           | 54.9        | 76.7         | 64.0       | 84.0       | 82.3        | 83.2      | 91.5       | 90.2        | 90.9      |
++---------------------------------+-------------+--------------+------------+------------+-------------+-----------+------------+-------------+-----------+
 
+**MultidomainGold Evaluation**
 
-.. list-table:: MultidomainGold Evaluation
-   :widths: 50 25 25 25
-   :header-rows: 1
++---------------------------------+-------------+--------------+------------+------------+-------------+-----------+------------+-------------+-----------+
+| Model                           | Pr. (spell) | Rec. (spell) | F1 (spell) | Pr. (punc) | Rec. (punc) | F1 (punc) | Pr. (case) | Rec. (case) | F1 (case) |
++=================================+=============+==============+============+============+=============+===========+============+=============+===========+
+| sage-ai-service                 | 81.6        | 77.7         | 79.6       | 70.2       | 67.5        | 68.8      | 80.5       | 80.5        | 80.5      |
++---------------------------------+-------------+--------------+------------+------------+-------------+-----------+------------+-------------+-----------+
+| sage-fredt5-large               | 43.4        | 49.7         | 46.3       | 21.8       | 21.3        | 21.6      | 58.8       | 23.9        | 34.0      |
++---------------------------------+-------------+--------------+------------+------------+-------------+-----------+------------+-------------+-----------+
+| sage-fredt5-large (ft.)         | 80.3        | 75.1         | 77.6       | 69.0       | 66.5        | 67.7      | 78.6       | 80.0        | 79.3      |
++---------------------------------+-------------+--------------+------------+------------+-------------+-----------+------------+-------------+-----------+
+| sage-fredt5-distilled-95m (ft.) | 77.2        | 69.9         | 73.4       | 66.8       | 63.4        | 65.0      | 76.8       | 79.1        | 77.9      |
++---------------------------------+-------------+--------------+------------+------------+-------------+-----------+------------+-------------+-----------+
+| gpt-3.5-turbo                   | 18.8        | 48.1         | 27.1       | 42.0       | 31.8        | 36.2      | 47.1       | 51.3        | 49.1      |
++---------------------------------+-------------+--------------+------------+------------+-------------+-----------+------------+-------------+-----------+
+| gpt-4                           | 25.4        | 68.0         | 37.0       | 57.8       | 54.3        | 56.0      | 54.0       | 67.5        | 60.0      |
++---------------------------------+-------------+--------------+------------+------------+-------------+-----------+------------+-------------+-----------+
 
-   * - Model
-     - Precision
-     - Recall
-     - F1
-   * - M2M100-1.2B (Pre-train)
-     - 56.4
-     - 44.8
-     - 49.9
-   * - M2M100-1.2B (Pre-train + fine-tune)
-     - **62.5**
-     - 60.9
-     - **61.7**
-   * - M2M100-418M (Pre-train)
-     - 32.8
-     - 56.3
-     - 41.5
-   * - M2M100-418M (Pre-train + fine-tune)
-     - 57.9
-     - 56.5
-     - 57.2
-   * - FredT5-large (Pre-train)
-     - 42.5
-     - 42.0
-     - 42.2
-   * - FredT5-large (Pre-train + fine-tune)
-     - 61.7
-     - 60.5
-     - 61.1
-   * - ChatGPT gpt-4-0314
-     - 34.0
-     - **73.2**
-     - 46.4
-   * - Yandex.Speller
-     - 52.9
-     - 51.4
-     - 52.2
+**MedSpellchecker Evaluation**
 
++---------------------------------+-------------+--------------+------------+------------+-------------+-----------+------------+-------------+-----------+
+| Model                           | Pr. (spell) | Rec. (spell) | F1 (spell) | Pr. (punc) | Rec. (punc) | F1 (punc) | Pr. (case) | Rec. (case) | F1 (case) |
++=================================+=============+==============+============+============+=============+===========+============+=============+===========+
+| sage-ai-service                 | 71.3        | 73.5         | 72.4       | 75.1       | 69.2        | 72.0      | 80.9       | 72.8        | 76.6      |
++---------------------------------+-------------+--------------+------------+------------+-------------+-----------+------------+-------------+-----------+
+| sage-fredt5-large               | 35.2        | 54.5         | 42.8       | 19.2       | 13.2        | 15.7      | 48.7       | 36.8        | 41.9      |
++---------------------------------+-------------+--------------+------------+------------+-------------+-----------+------------+-------------+-----------+
+| sage-fredt5-large (ft.)         | 72.5        | 72.2         | 72.3       | 74.6       | 66.4        | 70.3      | 79.3       | 85.1        | 82.1      |
++---------------------------------+-------------+--------------+------------+------------+-------------+-----------+------------+-------------+-----------+
+| sage-fredt5-distilled-95m (ft.) | 65.1        | 64.8         | 64.9       | 78.6       | 63.1        | 70.0      | 63.5       | 74.7        | 68.7      |
++---------------------------------+-------------+--------------+------------+------------+-------------+-----------+------------+-------------+-----------+
+| gpt-3.5-turbo                   | 14.7        | 45.9         | 22.3       | 69.9       | 52.3        | 59.8      | 26.4       | 41.8        | 32.3      |
++---------------------------------+-------------+--------------+------------+------------+-------------+-----------+------------+-------------+-----------+
+| gpt-4                           | 37.8        | 72.3         | 49.6       | 81.4       | 64.3        | 71.9      | 73.0       | 62.1        | 67.1      |
++---------------------------------+-------------+--------------+------------+------------+-------------+-----------+------------+-------------+-----------+
 
-.. list-table:: MedSpellchecker Evaluation
-   :widths: 50 25 25 25
-   :header-rows: 1
+**GitHubTypoCorpusRu Evaluation**
 
-   * - Model
-     - Precision
-     - Recall
-     - F1
-   * - M2M100-1.2B (Pre-train)
-     - 63.7
-     - 57.8
-     - 60.6
-   * - M2M100-1.2B (Pre-train + fine-tune)
-     - 78.8
-     - **71.4**
-     - **74.9**
-   * - M2M100-418M (Pre-train)
-     - 23.2
-     - 64.5
-     - 34.1
-   * - M2M100-418M (Pre-train + fine-tune)
-     - 73.1
-     - 62.4
-     - 67.3
-   * - FredT5-large (Pre-train)
-     - 37.2
-     - 51.7
-     - 43.3
-   * - FredT5-large (Pre-train + fine-tune)
-     - 37.5
-     - 59.3
-     - 45.9
-   * - ChatGPT gpt-4-0314
-     - 54.2
-     - 69.4
-     - 60.9
-   * - Yandex.Speller
-     - **80.6**
-     - 47.8
-     - 60.0
++---------------------------------+-------------+--------------+------------+------------+-------------+-----------+------------+-------------+-----------+
+| Model                           | Pr. (spell) | Rec. (spell) | F1 (spell) | Pr. (punc) | Rec. (punc) | F1 (punc) | Pr. (case) | Rec. (case) | F1 (case) |
++=================================+=============+==============+============+============+=============+===========+============+=============+===========+
+| sage-ai-service                 | 70.8        | 56.3         | 62.7       | 48.9       | 35.8        | 41.4      | 32.9       | 45.3        | 38.1      |
++---------------------------------+-------------+--------------+------------+------------+-------------+-----------+------------+-------------+-----------+
+| sage-fredt5-large               | 46.0        | 46.6         | 46.3       | 22.7       | 18.3        | 20.2      | 12.0       | 13.2        | 12.6      |
++---------------------------------+-------------+--------------+------------+------------+-------------+-----------+------------+-------------+-----------+
+| sage-fredt5-large (ft.)         | 67.5        | 53.2         | 59.5       | 48.5       | 38.0        | 42.6      | 37.3       | 50.0        | 42.7      |
++---------------------------------+-------------+--------------+------------+------------+-------------+-----------+------------+-------------+-----------+
+| sage-fredt5-distilled-95m (ft.) | 57.8        | 48.5         | 52.7       | 45.2       | 39.5        | 42.1      | 29.9       | 46.2        | 36.3      |
++---------------------------------+-------------+--------------+------------+------------+-------------+-----------+------------+-------------+-----------+
+| gpt-3.5-turbo                   | 23.7        | 38.7         | 29.4       | 37.6       | 23.3        | 28.7      | 19.6       | 35.9        | 25.3      |
++---------------------------------+-------------+--------------+------------+------------+-------------+-----------+------------+-------------+-----------+
+| gpt-4                           | 27.0        | 52.8         | 35.7       | 45.9       | 32.6        | 38.2      | 25.7       | 36.8        | 30.2      |
++---------------------------------+-------------+--------------+------------+------------+-------------+-----------+------------+-------------+-----------+
 
+**BEA60K Evaluation**
 
-.. list-table:: GitHubTypoCorpusRu Evaluation
-   :widths: 50 25 25 25
-   :header-rows: 1
++---------------------------------------------------+-----------+--------+------+
+| Model                                             | Precision | Recall | F1   |
++===================================================+===========+========+======+
+| sage-mt5-large                                    | 64.7      | 83.8   | 73.0 |
++---------------------------------------------------+-----------+--------+------+
+| T5-large-spell                                    | 66.5      | 83.1   | 73.9 |
++---------------------------------------------------+-----------+--------+------+
+| gpt-3.5-turbo                                     | 66.9      | 84.1   | 74.5 |
++---------------------------------------------------+-----------+--------+------+
+| gpt-4                                             | 68.6      | 85.2   | 76.0 |
++---------------------------------------------------+-----------+--------+------+
+| `Bert <https://github.com/neuspell/neuspell>`_    | 65.8      | 79.6   | 72.0 |
++---------------------------------------------------+-----------+--------+------+
+| `SC-LSTM <https://github.com/neuspell/neuspell>`_ | 62.2      | 80.3   | 72.0 |
++---------------------------------------------------+-----------+--------+------+
 
-   * - Model
-     - Precision
-     - Recall
-     - F1
-   * - M2M100-1.2B (Pre-train)
-     - 45.7
-     - 41.4
-     - 43.5
-   * - M2M100-1.2B (Pre-train + fine-tune)
-     - 47.1
-     - 42.9
-     - 44.9
-   * - M2M100-418M (Pre-train)
-     - 27.5
-     - 42.6
-     - 33.4
-   * - M2M100-418M (Pre-train + fine-tune)
-     - 42.8
-     - 37.8
-     - 40.2
-   * - FredT5-large (Pre-train)
-     - 52.7
-     - 42.4
-     - 46.6
-   * - FredT5-large (Pre-train + fine-tune)
-     - 61.2
-     - 45.4
-     - **52.1**
-   * - ChatGPT text-davinci-003
-     - 46.5
-     - **58.1**
-     - 51.7
-   * - Yandex.Speller
-     - **67.7**
-     - 37.5
-     - 48.3
+**JFLEG Evaluation**
 
++---------------------------------------------------+-----------+--------+------+
+| Model                                             | Precision | Recall | F1   |
++===================================================+===========+========+======+
+| sage-mt5-large                                    | 74.9      | 88.4   | 81.1 |
++---------------------------------------------------+-----------+--------+------+
+| T5-large-spell                                    | 83.4      | 84.3   | 83.8 |
++---------------------------------------------------+-----------+--------+------+
+| gpt-3.5-turbo                                     | 77.8      | 88.6   | 82.9 |
++---------------------------------------------------+-----------+--------+------+
+| gpt-4                                             | 77.9      | 88.3   | 82.8 |
++---------------------------------------------------+-----------+--------+------+
+| `Bert <https://github.com/neuspell/neuspell>`_    | 78.5      | 85.4   | 81.8 |
++---------------------------------------------------+-----------+--------+------+
+| `SC-LSTM <https://github.com/neuspell/neuspell>`_ | 80.6      | 86.1   | 83.2 |
++---------------------------------------------------+-----------+--------+------+
 
-All the mentioned datasets are available as HuggingFace datasets `here <https://huggingface.co/datasets/ai-forever/spellcheck_benchmark>`_ and through the API of our library: 
+**RUSpellRU**, **MultidomainGold**, **MedSpellChecker** and **GitHubTypoCorpusRu** are available as HuggingFace datasets `here <https://huggingface.co/datasets/ai-forever/spellcheck_punctuation_benchmark>`_ and through the API of our library:
 
 .. code-block:: python
 
-   from sage.utils import load_available_dataset_from_hf, DatasetsAvailable
+    from sage.utils import load_available_dataset_from_hf, DatasetsAvailable
 
-   print([dataset.name for dataset in DatasetsAvailable])
-   # ['MultidomainGold', 'RUSpellRU', 'MedSpellchecker', 'GitHubTypoCorpusRu']
+    print([dataset.name for dataset in DatasetsAvailable])
+    # ['MultidomainGold', 'RUSpellRU', 'MedSpellchecker', 'GitHubTypoCorpusRu', 'MultidomainGold_orth', 'RUSpellRU_orth', 'MedSpellchecker_orth', 'GitHubTypoCorpusRu_orth']
 
-   gold_dataset = load_available_dataset_from_hf(DatasetsAvailable.MultidomainGold.name, for_labeler=False)
-   print(len(gold_dataset))
-   # 7678
+    gold_dataset = load_available_dataset_from_hf(DatasetsAvailable.MultidomainGold.name, for_labeler=False)
+    print(len(gold_dataset))
+    # 7675
 
-   sources, corrections = load_available_dataset_from_hf(DatasetsAvailable.RUSpellRU.name, for_labeler=True, split="train")
-   print(len(sources), len(corrections))
-   # 2000 2000
+    sources, corrections = load_available_dataset_from_hf(DatasetsAvailable.RUSpellRU.name, for_labeler=True, split="train")
+    print(len(sources), len(corrections))
+    # 2000 2000
 
 Evaluation
 ----------
 
 We also provide functionality to evaluate the performance of spelling correction systems and rank them. 
 
-🎯 Here is what you get and how you can interpret these:
+🎯 Currently two options are available:
 
+* `ruspelleval <https://www.dialog-21.ru/media/3427/sorokinaaetal.pdf>`_;
+* `ERRANT <https://github.com/chrisjbryant/errant>`_-based metric adapted for the Russian language;
 
-* **Precision**\ : one minus share of unnecessary amendments; 
-* **Recall**\ : proportion of expected corrections;
-* **F1**\ : famous geometric mean of aforementioned two;
+Both algorithms output Precision, Recall and F1 scores that can be interpreted like the following:
+
+* **Precision**: one minus share of unnecessary amendments;
+* **Recall**: proportion of expected corrections;
+* **F1**: famous geometric mean of aforementioned two;
 
 You can obtain these metrics simply by
 
 .. code-block:: python
 
-   from sage.evaluation import evaluation
-   from sage.utils import DatasetsAvailable, load_available_dataset_from_hf
+    from sage.evaluation import Scorer
+    from sage.utils import DatasetsAvailable, load_available_dataset_from_hf
 
-   sources, corrections = load_available_dataset_from_hf(DatasetsAvailable.RUSpellRU.name, for_labeler=True, split="test")
-   metrics = evaluation(sources, corrections, corrections)
-   print(metrics)
-   # {'Precision': 100.0, 'Recall': 100.0, 'F1': 100.0}
+    sources, corrections = load_available_dataset_from_hf(DatasetsAvailable.RUSpellRU.name, for_labeler=True, split="test")
+
+    scorer = Scorer()
+    metrics = scorer.score(sources, corrections, corrections, metrics=["ruspelleval", "errant"])
+    print(metrics)
+    # {'Precision': 100.0, 'Recall': 100.0, 'F1': 100.0, 'CASE_Precision': 100.0, 'CASE_Recall': 100.0, 'CASE_F1': 100.0, 'SPELL_Precision': 100.0, 'SPELL_Recall': 100.0, 'SPELL_F1': 100.0, 'PUNCT_Precision': 100.0, 'PUNCT_Recall': 100.0, 'PUNCT_F1': 100.0, 'YO_Precision': 100.0, 'YO_Recall': 100.0, 'YO_F1': 100.0}
 
 ... or by directly assessing the model:
 
 .. code-block:: python
 
-   import torch
-   from sage.spelling_correction import AvailableCorrectors, RuM2M100ModelForSpellingCorrection, T5ModelForSpellingCorruption
-   from sage.utils import DatasetsAvailable
+    import os
+    import torch
+    from sage.utils import DatasetsAvailable
+    from sage.spelling_correction import AvailableCorrectors
+    from sage.spelling_correction import T5ModelForSpellingCorruption
 
-   corrector = RuM2M100ModelForSpellingCorrection.from_pretrained(AvailableCorrectors.m2m100_418M.value)
-   corrector.model.to(torch.device("cuda:0"))
+    corrector_fred_95m = T5ModelForSpellingCorruption.from_pretrained(AvailableCorrectors.sage_fredt5_distilled_95m.value)
+    corrector_mt5 = T5ModelForSpellingCorruption.from_pretrained(AvailableCorrectors.sage_mt5_large.value)
 
-   metrics = corrector.evaluate(DatasetsAvailable.MultidomainGold.name, batch_size=16)
-   print(metrics)
-   # {'Precision': 32.82, 'Recall': 57.69, 'F1': 41.84}
+    corrector_fred_95m.model.to(torch.device("cuda:0"))
+    corrector_mt5.model.to(torch.device("cuda:0"))
 
-   corrector = T5ModelForSpellingCorruption.from_pretrained(AvailableCorrectors.ent5_large.value)
-   corrector.model.to(torch.device("cuda:0"))
+    metrics = corrector_fred_95m.evaluate("RUSpellRU", metrics=["errant", "ruspelleval"], batch_size=32)
+    print(metrics)
+    # {'CASE_Precision': 94.41, 'CASE_Recall': 92.55, 'CASE_F1': 93.47, 'SPELL_Precision': 77.52, 'SPELL_Recall': 64.09, 'SPELL_F1': 70.17, 'PUNCT_Precision': 86.77, 'PUNCT_Recall': 80.59, 'PUNCT_F1': 83.56, 'YO_Precision': 46.21, 'YO_Recall': 73.83, 'YO_F1': 56.84, 'Precision': 83.48, 'Recall': 74.75, 'F1': 78.87}
 
-   metrics = corrector.evaluate("../data/example_data/jfleg/", batch_size=32, prefix="grammar: ")
-   print(metrics)
-   # {'Precision': 83.43, 'Recall': 84.25, 'F1': 83.84}
+    metrics = corrector_mt5.evaluate("/content/sage/data/example_data/jfleg", metrics=["ruspelleval"], batch_size=16)
+    print(metrics)
+    # {'Precision': 75.94, 'Recall': 88.15, 'F1': 81.59}
+
+The metrics output by ERRANT based algorithm are indicated by the corresponding prefix, which refers to the specific type of errors:
+
+* *CASE*: erroneously used case;
+* *SPELL*: spelling and grammar errors;
+* *PUNCT*: punctuation errors;
+* *YO*: unnecessary replacement of "YO" (ё) letter;
 
 📌 Credit for evaluation script goes to Aleksei Sorokin and his notable `work <https://www.dialog-21.ru/media/3427/sorokinaaetal.pdf>`_ 
 in proceedings of `SpellRueval <https://www.dialog-21.ru/evaluation/2016/spelling_correction/>`_. 
@@ -683,7 +676,7 @@ Citation
 
 If you want to know more about our work take a look at these publications:
 
-💥 Our first `Paper <https://arxiv.org/abs/2308.09435>`_ provides a thorough description of the methodology used to obtain SOTA 
+💥 Our first `Paper <https://aclanthology.org/2024.findings-eacl.10/>`_ provides a thorough description of the methodology used to obtain SOTA
 models for spelling corrections as well the comprehensive reports of all experiments that have been carried out. 
 
 💫 While our Dialogue-2023 `Paper <https://www.dialog-21.ru/media/5914/martynovnplusetal056.pdf>`_ focuses on exploiting 
@@ -691,16 +684,25 @@ resources for the task of spelling correction and procedures on obtaining high-q
 
 .. code-block::
 
-   @misc{martynov2023methodology,
-         title={A Methodology for Generative Spelling Correction
-   via Natural Spelling Errors Emulation across Multiple Domains and Languages}, 
-         author={Nikita Martynov and Mark Baushenko and Anastasia Kozlova and
-   Katerina Kolomeytseva and Aleksandr Abramov and Alena Fenogenova},
-         year={2023},
-         eprint={2308.09435},
-         archivePrefix={arXiv},
-         primaryClass={cs.CL}
-   }
+    @inproceedings{martynov-etal-2024-methodology,
+        title = "A Methodology for Generative Spelling Correction via Natural Spelling Errors Emulation across Multiple Domains and Languages",
+        author = "Martynov, Nikita  and
+          Baushenko, Mark  and
+          Kozlova, Anastasia  and
+          Kolomeytseva, Katerina  and
+          Abramov, Aleksandr  and
+          Fenogenova, Alena",
+        editor = "Graham, Yvette  and
+          Purver, Matthew",
+        booktitle = "Findings of the Association for Computational Linguistics: EACL 2024",
+        month = mar,
+        year = "2024",
+        address = "St. Julian{'}s, Malta",
+        publisher = "Association for Computational Linguistics",
+        url = "https://aclanthology.org/2024.findings-eacl.10",
+        pages = "138--155",
+        abstract = "Large language models excel in text generation and generalization, however they face challenges in text editing tasks, especially in correcting spelling errors and mistyping.In this paper, we present a methodology for generative spelling correction (SC), tested on English and Russian languages and potentially can be extended to any language with minor changes. Our research mainly focuses on exploring natural spelling errors and mistyping in texts and studying how those errors can be emulated in correct sentences to enrich generative models{'} pre-train procedure effectively. We investigate the effects of emulations in various text domains and examine two spelling corruption techniques: 1) first one mimics human behavior when making a mistake through leveraging statistics of errors from a particular dataset, and 2) second adds the most common spelling errors, keyboard miss clicks, and some heuristics within the texts.We conducted experiments employing various corruption strategies, models{'} architectures, and sizes in the pre-training and fine-tuning stages and evaluated the models using single-domain and multi-domain test sets. As a practical outcome of our work, we introduce SAGE (Spell checking via Augmentation and Generative distribution Emulation).",
+    }
 
    @inproceedings{martynov2023augmentation,
      title={Augmentation methods for spelling corruptions},
