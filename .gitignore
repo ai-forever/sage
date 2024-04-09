@@ -4,3 +4,4 @@ __pycache__
 sage.egg-info
 build
 .DS_Store
+.idea

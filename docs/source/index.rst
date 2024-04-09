@@ -42,10 +42,10 @@
      <h4>
        <a href="#id1">Install</a> |
        <a href="#id12">Models</a> |
-       <a href="#id24">Evaluation</a> |
+       <a href="#id32">Evaluation</a> |
        <a href="#id7">SBSC</a> |
        <a href="#id9">Augmentex</a> |
-       <a href="#id24">Papers</a>
+       <a href="#id33">Papers</a>
      </h4>
    </div>
 
@@ -93,14 +93,8 @@ Table of contents
   * `Augmentex <#id9>`_
 
 * `Spelling correction <#id12>`_
-
-  * `RUSpellRU evaluation <#ruspellru-evaluation>`_
-  * `MultidomainGold evaluation <#multidomaingold-evaluation>`_
-  * `MedSpellchecker evaluation <#medspellchecker-evaluation>`_
-  * `GitHubTypoCorpusRu evaluation <#githubtypocorpusru-evaluation>`_
-
-* `Evaluation <#id24>`_
-* `Citation <#id24>`_
+* `Evaluation <#id32>`_
+* `Citation <#id33>`_
 
 
 Installation
@@ -260,8 +254,8 @@ Spelling Corruption
 -------------------
 
 We implemented two methods for spelling corruption. **S**\ tatistic-\ **b**\ ased **S**\ pelling **C**\ orruption (\ **SBSC**\ ) aims 
-to mimic human behaviour when making an error. While `Augmentex <#augmentex>`_ relies on rule-based heuristics and common
-errors and mistypings especially those committed while typing text on a keyboard. 
+to mimic human behaviour when making an error. While `Augmentex <#id9>`_ relies on rule-based heuristics and common
+errors and mistypings especially those committed while typing text on a keyboard.
 
 🚀 Both methods proved their effectiveness for spelling correction systems and celebrated substantial **performance gains**
 fully reported in our `Paper <https://aclanthology.org/2024.findings-eacl.10/>`_.
