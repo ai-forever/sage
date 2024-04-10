@@ -54,17 +54,15 @@ class Corrector(metaclass=ABCMeta):
         """
         Corrects a single input sentence.
 
-        Parameters
-        ----------
-        sentence: string, source sentence to correct.
-        prefix: string, some models need some sort of a prompting;
-        **generation_params: parameters passed to model.generate(...);
-
-        Returns
-        -------
-        string, corresponding correction.
+        :param sentence: a source sentence;
+        :type sentence: str
+        :param prefix: some models need some sort of a prompting;
+        :type prefix: str
+        :param generation_params: parameters passed to `generate` method of a HuggingFace model;
+        :type generation_params: dict
+        :return: corresponding corrected sentence
+        :rtype: list of str
         """
-
         return self.batch_correct([sentence], 1, prefix, **generation_params)[-1]
 
     def evaluate(
@@ -79,17 +77,20 @@ class Corrector(metaclass=ABCMeta):
         """
         Evaluate the particular model on the spellcheck datasets.
 
-        Args:
-            dataset_name_or_path: string, a path to a locally situated dataset or a name of a dataset on HuggingFace;
-            metrics: list of string, set of metrics to be used to report performance;
-            batch_size: int, size of subsample of input sentences;
-            prefix: string, some models need some sort of a prompting;
-            dataset_split: string, train / test / dev part to be evaluated on;
-            **generation_params: parameters passed to model.generate(...);
-
-        Returns:
-            dict[str, float], mapping between metric's name and its corresponding value.
-
+        :param dataset_name_or_path: a path to a locally situated dataset or a name of a dataset on HuggingFace;
+        :type dataset_name_or_path: str
+        :param metrics: set of metrics to be used to report performance;
+        :type metrics: list of str
+        :param batch_size: size of subsample of input sentences;
+        :type batch_size: int
+        :param prefix: some models need some sort of a prompting;
+        :type prefix: str
+        :param dataset_split: train / test / dev part to be evaluated on;
+        :type dataset_split: str
+        :param generation_params: parameters passed to `generate` method of a HuggingFace model;
+        :type generation_params: dict
+        :return: mapping between metric's name and its corresponding value
+        :rtype: dict[str, float]
         """
         dataset_name_or_path = str(dataset_name_or_path)
         if dataset_name_or_path in datasets_available:
