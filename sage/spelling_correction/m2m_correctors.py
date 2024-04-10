@@ -21,10 +21,31 @@ class RuM2M100ModelForSpellingCorrection(Corrector):
     """M2M100-based models."""
 
     def __init__(self, model_name_or_path: Union[str, os.PathLike]):
+        """
+        Initialize the M2M100-type corrector from a pre-trained checkpoint.
+        The latter can be either locally situated checkpoint or a name of a model on HuggingFace.
+
+        NOTE: This method does not really load the weights, it just stores the path or name.
+
+        Args:
+            model_name_or_path: string or os.PathLike object, the aforementioned name or path to checkpoint.
+        """
+
         self.model_name_or_path = model_name_or_path
 
     @classmethod
     def from_pretrained(cls, model_name_or_path: Union[str, os.PathLike]):
+        """
+        Initialize the M2M100-type corrector from a pre-trained checkpoint.
+        The latter can be either locally situated checkpoint or a name of a model on HuggingFace.
+
+        Args:
+            model_name_or_path: string or os.PathLike object, the aforementioned name or path to checkpoint.
+
+        Returns:
+            object of `RuM2M100ModelForSpellingCorrection` class.
+        """
+
         engine = cls(model_name_or_path)
         engine.model = M2M100ForConditionalGeneration.from_pretrained(model_name_or_path)
         engine.tokenizer = M2M100Tokenizer.from_pretrained(model_name_or_path, src_lang="ru", tgt_lang="ru")
@@ -38,7 +59,18 @@ class RuM2M100ModelForSpellingCorrection(Corrector):
             prefix: Optional[str] = "",
             **generation_params,
     ) -> List[List[Any]]:
-        """Correct multiple sentences"""
+        """
+        Corrects multiple sentences.
+
+        Args:
+            sentences: list of strings, source sentence to correct;
+            batch_size: int, size of subsample of input sentences;
+            prefix: string, some models need some sort of a prompting;
+            **generation_params: parameters passed to model.generate(...);
+
+        Returns:
+            list of list of strings, list of corresponding corrections.
+        """
 
         if not hasattr(self, "model"):
             raise RuntimeError("Please load weights using `from_pretrained` method from one of the available models.")
