@@ -3,7 +3,7 @@
 
 The dataset is a part of `spellcheck_punctuation_benchmark <https://huggingface.co/datasets/ai-forever/spellcheck_punctuation_benchmark>`_:
 
-.. image:: ../../images/benchmark.svg
+.. image:: ../../images/benchmark.png
    :align: center
 
 The Benchmark includes four datasets, each of which consists of pairs of sentences in Russian language. Each pair embodies sentence, which may contain spelling and punctuation errors, and its corresponding correction. Datasets were gathered from various sources and domains including social networks, internet blogs, github commits, medical anamnesis, literature, news, reviews and more.
@@ -29,6 +29,7 @@ Table of contents
   * `Data Splits <#id8>`_
 
 * `Dataset Creation <#id9>`_
+
   * `Initial Data Collection and Normalization <#id10>`_
   * `Annotation process <#id11>`_
   * `Who are the annotators? <#id12>`_
@@ -148,7 +149,7 @@ We set up two-stage annotation project via a crowd-sourcing platform Toloka:
 2. Validation stage: we provide annotators with the pair of sentences (source and its corresponding correction from the previous stage) and ask them to check if the correction is right.
 
 We prepared instructions for annotators for each task. The instructions ask annotators to correct misspellings if it does not alter the original style of the text.
-Instructions do not provide rigorous criteria on the matter of distinguishing the nature of an error in terms of its origin - whether it came from an urge to endow a sentence with particular stylistic features or from unintentional spelling violation since it is time-consuming and laborious to describe every possible case of employing slang, dialect, collo- quialisms, etc. instead of proper language. Instructions also do not distinguish errors that come from the geographical or social background of the source. Instead, we rely on annotators’ knowledge and understanding of a language since, in this work, the important factor is to preserve the original style of the text.
+Instructions do not provide rigorous criteria on the matter of distinguishing the nature of an error in terms of its origin - whether it came from an urge to endow a sentence with particular stylistic features or from unintentional spelling violation since it is time-consuming and laborious to describe every possible case of employing slang, dialect, colloquialisms, etc. instead of proper language. Instructions also do not distinguish errors that come from the geographical or social background of the source. Instead, we rely on annotators’ knowledge and understanding of a language since, in this work, the important factor is to preserve the original style of the text.
 To ensure we receive qualified expertise, we set up test iteration on a small subset of the data for both stages. We manually validated the test results and selected annotators, who processed at least six samples (2% of the total test iteration) and did not make a single error. After test iteration, we cut 85% and 86% of labellers for gathering and validation stages.
 We especially urge annotators to correct mistakes associated with the substitution of the letters "ё" "й" and "щ" for corresponding "е" "и" and "ш" and not to explain abbreviations and correct punctuation errors. Each annotator is also warned about potentially sensitive topics in data (e.g., politics, societal minorities, and religion).
 

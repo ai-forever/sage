@@ -4,7 +4,7 @@
 
 The dataset is a part of `spellcheck_punctuation_benchmark <https://huggingface.co/datasets/ai-forever/spellcheck_punctuation_benchmark>`_:
 
-.. image:: ../../images/benchmark.svg
+.. image:: ../../images/benchmark.png
    :align: center
 
 
