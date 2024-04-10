@@ -29,6 +29,7 @@ Table of contents
   * `Data Splits <#id8>`_
 
 * `Dataset Creation <#id9>`_
+
   * `Initial Data Collection and Normalization <#id10>`_
   * `Annotation process <#id11>`_
   * `Who are the annotators? <#id12>`_
