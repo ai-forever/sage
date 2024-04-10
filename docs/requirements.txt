@@ -4,4 +4,5 @@ docutils==0.18.1
 sphinxemoji
 Levenshtein
 git+https://github.com/Askinkaty/errant/@4183e57
+https://huggingface.co/spacy/ru_core_news_lg/resolve/main/ru_core_news_lg-any-py3-none-any.whl
 .
