@@ -4,29 +4,16 @@
 Table of contents
 ^^^^^^^^^^^^^^^^^
 
-* `Dataset description <#id1>`_
-
-  * `Dataset summary <#id2>`_
-  * `Supported Tasks and Leaderboards <#id3>`_
-  * `Languages <#id4>`_
-
-* `Dataset Structure <#id5>`_
-
-  * `Data Instances <#id6>`_
-  * `Data Fields <#id7>`_
-  * `Data Splits <#id8>`_
-
-* `Considerations for Using the Data <#id9>`_
-
-  * `Discussion of Biases <#id9>`_
-  * `Other Known Limitations <#id10>`_
-
-* `Additional Information <#id11>`_
-
-  * `Future plans <#id12>`_
-  * `Dataset Curators <#id13>`_
-  * `Licensing Information <#id14>`_
-  * `Citation Information <#id15>`_
+* `Summary <#id1>`_
+* `Public references <#id2>`_
+* `Examples <#id3>`_
+* `Metrics <#id4>`_
+* `How to use <#id5>`_
+* `API <#id6>`_
+* `Resources <#id7>`_
+* `License <#id8>`_
+* `Specifications <#id9>`_
+* `Contacts <#id10>`_
 
 Summary
 ^^^^^^^
@@ -39,7 +26,7 @@ Public references
 ^^^^^^^^^^^^^^^^^
 
 - `SAGE library announcement <https://youtu.be/yFfkV0Qjuu0>`_, DataFest 2023
-- `Paper about synthetic error generation methods <https://www.dialog-21.ru/media/5914/martynovnplusetal056.pdf>`, Dialogue 2023
+- `Paper about synthetic error generation methods <https://www.dialog-21.ru/media/5914/martynovnplusetal056.pdf>`_, Dialogue 2023
 - `EACL 2024 paper <https://aclanthology.org/2024.findings-eacl.10/>`_
 
 
@@ -172,10 +159,19 @@ How to use
     #["прийдя в МГТУ я был удивлен никого не обнаружив там..."]
 
 
+API
+^^^^^
+
+.. autoclass:: sage.spelling_correction.m2m_correctors.RuM2M100ModelForSpellingCorrection
+    :members:
+    :inherited-members:
+    :show-inheritance:
+
+
 Resources
 ^^^^^^^^^
 
-- `SAGE library <https://github.com/ai-forever/sage>`, GitHub
+- `SAGE library <https://github.com/ai-forever/sage>`_, GitHub
 - `SAGE v1.1.0 models release <https://huggingface.co/collections/ai-forever/sage-v110-release-660abac12d0769b9c67be501>`_, HuggingFace
 - `EACL 2024 paper <https://aclanthology.org/2024.findings-eacl.10/>`_
 
@@ -197,10 +193,3 @@ Contacts
 ^^^^^^^^^^^
 nikita.martynov.98@list.ru
 
-API
-^^^^^
-
-.. autoclass:: sage.spelling_correction.m2m_correctors.RuM2M100ModelForSpellingCorrection
-    :members:
-    :special-members:
-    :exclude-members:
