@@ -14,7 +14,7 @@ copyright = '2021, Graziella'
 author = 'Nikita Martynov'
 
 release = '1.0'
-version = '1.0.0'
+version = '1.1.0'
 
 # -- General configuration
 

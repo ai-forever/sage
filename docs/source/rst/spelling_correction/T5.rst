@@ -1,2 +1,149 @@
 🇬🇧 T5-large
 -------------------
+
+The model corrects spelling errors and typos by bringing all words in the text to the standard English language.
+The proofreader was trained based on the `T5-large <https://huggingface.co/t5-large>`_ model.
+An extensive dataset with “artificial” errors was taken as a training corpus: the corpus was assembled on the basis of the English-language Wikipedia and News blogs, then typos and spelling errors were automatically introduced into it using the functionality of the `SAGE library <https://github.com/ai-forever/sage>`_.
+
+
+Table of contents
+^^^^^^^^^^^^^^^^^
+
+* `Summary <#id1>`_
+* `Public references <#id2>`_
+* `Examples <#id3>`_
+* `Metrics <#id4>`_
+* `How to use <#id5>`_
+* `API <#id6>`_
+* `Resources <#id7>`_
+* `License <#id10>`_
+* `Specifications <#id12>`_
+* `Contacts <#id13>`_
+
+
+Public references
+^^^^^^^^^^^^^^^^^
+
+- `SAGE library announcement <https://youtu.be/yFfkV0Qjuu0>`_, DataFest 2023
+- `Paper about synthetic error generation methods <https://www.dialog-21.ru/media/5914/martynovnplusetal056.pdf>`_, Dialogue 2023
+- `EACL 2024 paper <https://aclanthology.org/2024.findings-eacl.10/>`_
+
+
+Examples
+^^^^^^^^^
+
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Input                                                                                                                                                                                                                                                                         | Output                                                                                                                                                                                                                                                                    |
++===============================================================================================================================================================================================================================================================================+===========================================================================================================================================================================================================================================================================+
+| Th festeivаl was excelzecnt in many ways, and in particular it beinganinternational festjival sss a chаllenging, bet brilli an t ea.                                                                                                                                          | The festival was excellent in many ways, and in particular it beinganinternational festival is a challenging, but brilliant one to see.                                                                                                                                   |
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| That 's why I believe in the solution which is the closest to human nature and can help us to avoid boredome. I am sure that eventually we will take off our clothes and in the future we will be undressed and free. There wo n't be any problem with being up - do - date . | That's why I believe in the solution which is the closest to human nature and can help us to avoid boredom. I am sure that eventually we will take off our clothes and in the future we will be undressed and free. There won't be any problem with being up - do - date. |
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| If you bought something goregous, you well be very happy.                                                                                                                                                                                                                     | If you bought something gorgeous, you will be very happy.                                                                                                                                                                                                                 |
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
+
+Metrics
+^^^^^^^^^
+
+Below are automatic metrics for determining the correctness of the spell checkers.
+We present a comparison of our solution both with open automatic spell checkers and with the ChatGPT family of models on two available datasets:
+- **BEA60K**: English spelling errors collected from several domains;
+- **JFLEG**: 1601 sentences in English, which contain about 2 thousand spelling errors;
+
+
+**BEA60K**
+
++------------------------------------------------+-----------+--------+------+
+| Model                                          | Precision | Recall | F1   |
++================================================+===========+========+======+
+| T5-large-spell                                 | 66.5      | 83.1   | 73.9 |
++------------------------------------------------+-----------+--------+------+
+| ChatGPT gpt-3.5-turbo-0301                     | 66.9      | 84.1   | 74.5 |
++------------------------------------------------+-----------+--------+------+
+| ChatGPT gpt-4-0314                             | 68.6      | 85.2   | 76.0 |
++------------------------------------------------+-----------+--------+------+
+| ChatGPT text-davinci-003                       | 67.8      | 83.9   | 75.0 |
++------------------------------------------------+-----------+--------+------+
+| Bert (https://github.com/neuspell/neuspell)    | 65.8      | 79.6   | 72.0 |
++------------------------------------------------+-----------+--------+------+
+| SC-LSTM (https://github.com/neuspell/neuspell) | 62.2      | 80.3   | 72.0 |
++------------------------------------------------+-----------+--------+------+
+
+
+**JFLEG**
+
++------------------------------------------------+-----------+--------+------+
+| Model                                          | Precision | Recall | F1   |
++================================================+===========+========+======+
+| T5-large-spell                                 | 83.4      | 84.3   | 83.8 |
++------------------------------------------------+-----------+--------+------+
+| ChatGPT gpt-3.5-turbo-0301                     | 77.8      | 88.6   | 82.9 |
++------------------------------------------------+-----------+--------+------+
+| ChatGPT gpt-4-0314                             | 77.9      | 88.3   | 82.8 |
++------------------------------------------------+-----------+--------+------+
+| ChatGPT text-davinci-003                       | 76.8      | 88.5   | 82.2 |
++------------------------------------------------+-----------+--------+------+
+| Bert (https://github.com/neuspell/neuspell)    | 78.5      | 85.4   | 81.8 |
++------------------------------------------------+-----------+--------+------+
+| SC-LSTM (https://github.com/neuspell/neuspell) | 80.6      | 86.1   | 83.2 |
++------------------------------------------------+-----------+--------+------+
+
+
+
+How to use
+^^^^^^^^^^^^
+
+.. code-block:: python
+
+    from transformers import T5ForConditionalGeneration, AutoTokenizer
+
+    path_to_model = "ai-forever/T5-large-spell"
+    model = T5ForConditionalGeneration.from_pretrained(path_to_model)
+    tokenizer = AutoTokenizer.from_pretrained(path_to_model)
+
+    prefix = "grammar: "
+    sentence = "If you bought something goregous, you well be very happy."
+    sentence = prefix + sentence
+    encodings = tokenizer(sentence, return_tensors="pt")
+    generated_tokens = model.generate(**encodings)
+    answer = tokenizer.batch_decode(generated_tokens, skip_special_tokens=True)
+    print(answer)
+
+    # ["If you bought something gorgeous, you will be very happy."]
+
+
+API
+^^^^^
+
+.. autoclass:: sage.spelling_correction.t5_correctors.T5ModelForSpellingCorruption
+    :members:
+    :inherited-members:
+    :show-inheritance:
+
+
+Resources
+^^^^^^^^^
+
+- `SAGE library <https://github.com/ai-forever/sage>`_, GitHub
+- `SAGE v1.1.0 models release <https://huggingface.co/collections/ai-forever/sage-v110-release-660abac12d0769b9c67be501>`_, HuggingFace
+- `EACL 2024 paper <https://aclanthology.org/2024.findings-eacl.10/>`_
+
+License
+^^^^^^^^^
+
+The `T5-large <https://huggingface.co/t5-large>`_ model, on which our solution is based, and its source code are supplied under the APACHE-2.0 license.
+Our solution is supplied under MIT license.
+
+Specifications
+^^^^^^^^^^^^^^^
+- File size: 3 Gb;
+- Framework: pytorch
+- Format: AI Service
+- Version: v1.0
+- Developer: SberDevices, AGI NLP
+
+Contacts
+^^^^^^^^^^^
+nikita.martynov.98@list.ru
+

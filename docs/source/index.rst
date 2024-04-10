@@ -723,6 +723,10 @@ resources for the task of spelling correction and procedures on obtaining high-q
    :caption: Models
    :hidden:
 
+   rst/spelling_correction/sage-fredt5-large.rst
+   rst/spelling_correction/sage-fredt5-distilled-95m.rst
+   rst/spelling_correction/sage-mt5-large.rst
+   rst/spelling_correction/sage-m2m100-1.2B.rst
    rst/spelling_correction/RuM2M100-1.2B.rst
    rst/spelling_correction/M2M100-418M.rst
    rst/spelling_correction/FredT5-large.rst
@@ -739,6 +743,6 @@ resources for the task of spelling correction and procedures on obtaining high-q
    :caption: Evaluation
    :hidden:
 
-   rst/evaluation/Errant.rst
-   rst/evaluation/WOS.rst
+   rst/evaluation/RuErrant.rst
+   rst/evaluation/RuSpellEval.rst
 
