@@ -9,7 +9,6 @@ An extensive dataset with “artificial” errors was taken as a training corpus
 Table of contents
 ^^^^^^^^^^^^^^^^^
 
-* `Summary <#id1>`_
 * `Public references <#id2>`_
 * `Examples <#id3>`_
 * `Metrics <#id4>`_

@@ -9,16 +9,15 @@ An extensive dataset with “artificial” errors was taken as a training corpus
 Table of contents
 ^^^^^^^^^^^^^^^^^
 
-* `Summary <#id1>`_
-* `Public references <#id2>`_
-* `Examples <#id3>`_
-* `Metrics <#id4>`_
-* `How to use <#id5>`_
-* `API <#id6>`_
-* `Resources <#id7>`_
+* `Public references <#id1>`_
+* `Examples <#id2>`_
+* `Metrics <#id3>`_
+* `How to use <#id4>`_
+* `API <#id5>`_
+* `Resources <#id6>`_
 * `License <#id8>`_
 * `Specifications <#id10>`_
-* `Contacts <#id12>`_
+* `Contacts <#id11>`_
 
 
 Public references
