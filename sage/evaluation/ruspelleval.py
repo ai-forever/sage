@@ -6,12 +6,13 @@ with minor changes.
 
 import copy
 import re
+import warnings
 from typing import List, Dict
 from collections import defaultdict
 
 import numpy as np
 import timeout_decorator
-from tqdm import tqdm
+from tqdm.auto import tqdm
 
 
 class TimeOutValidation(Exception):
@@ -342,12 +343,10 @@ def align_sents(source, correct, return_only_different=False, replace_cost=1.0,
 def make_corrections_data(source_sents, correct_sents, answer_sents):
     etalon_corrections = dict()
     answer_corrections = dict()
-    pb = tqdm(total=len(source_sents))
+    pb = tqdm(zip(source_sents, correct_sents, answer_sents), total=len(source_sents), desc="Calculating words metric")
 
-    for num, (source, correct, answer) in\
-            enumerate(zip(source_sents, correct_sents, answer_sents)):
+    for num, (source, correct, answer) in enumerate(pb):
         try:
-            pb.update(1)
             correct_indexes = align_sents(source, correct, return_only_different=True, replace_cost=1.9)
             src_indexes = align_sents(source, answer, return_only_different=True, replace_cost=1.9,
                                   groups_in_source=[elem[0] for elem in correct_indexes])
@@ -357,7 +356,7 @@ def make_corrections_data(source_sents, correct_sents, answer_sents):
             for ((i, j), (k, l)) in src_indexes:
                 answer_corrections[(num, i, j)] = tuple(answer[k:l])
         except TimeOutValidation:
-            print("Skipping {} line, because operation timed out...".format(num))
+            warnings.warn("Skipping {} line, because operation timed out...".format(num), UserWarning)
             
     return etalon_corrections, answer_corrections
 
@@ -411,16 +410,6 @@ def output_differences(diff_file, source_sents, correct_sents, answer_sents,
                     " ".join(answer_correction), " ".join(etalon_correction), width=width))
             fout.write("\n")
     return
-
-
-def test(task=1):
-    if task == 0:
-        first_sent = ['фотка', 'классная', 'кстате', 'хоть', 'и', 'не', 'по', 'теме']
-        second_sent = ['фотка', 'классная', 'кстати', 'хотя', 'не', 'по', 'теме']
-        align_sents(first_sent, second_sent, replace_cost=1.9)
-    elif task == 1:
-        first, second = 'жж', 'ж'
-        align_sents(first, second)
 
 
 def evaluation(
