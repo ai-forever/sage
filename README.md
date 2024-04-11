@@ -55,7 +55,7 @@ a complete solution that you need when working on a spelling problem:
 ## News
 🔥 **[2024-01-18]**: Our paper *"A Methodology for Generative Spelling Correction via Natural Spelling Errors Emulation across Multiple Domains and Languages"* is accepted for EACL 2024 conference!
 
-💥 **[2024-04-11]**: SAGE v1.1.0 is finally out: a comprehensive note about the details of release can be found [here](ссылка на новый хабр). 
+💥 **[2024-04-11]**: SAGE v1.1.0 is finally out: a comprehensive note about the details of release can be found [here](https://habr.com/ru/companies/sberdevices/articles/806897/). 
 
 ## Table of contents
 
