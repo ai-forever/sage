@@ -27,7 +27,7 @@ from typing import List, Dict, Optional, Union
 
 import numpy as np
 import pandas as pd
-from tqdm import tqdm
+from tqdm.auto import tqdm
 
 from .model import Model
 from .labeler import process_mistypings
@@ -70,8 +70,8 @@ class StatisticBasedSpellingCorruption:
             elif os.path.isdir(reference_dataset_name_or_path):
                 if os.path.isfile(os.path.join(reference_dataset_name_or_path, "sources.txt")) and \
                    os.path.isfile(os.path.join(reference_dataset_name_or_path, "corrections.txt")):
-                    src_file = open(os.path.join(reference_dataset_name_or_path, "sources.txt"))
-                    corr_file = open(os.path.join(reference_dataset_name_or_path, "corrections.txt"))
+                    src_file = open(os.path.join(reference_dataset_name_or_path, "sources.txt"), encoding="utf8")
+                    corr_file = open(os.path.join(reference_dataset_name_or_path, "corrections.txt"), encoding="utf8")
                     sources = src_file.read().split("\n")
                     corrections = corr_file.read().split("\n")
                     src_file.close()

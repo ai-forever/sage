@@ -1,5 +1,5 @@
-from .evaluate import evaluation
+from .scorer import Scorer
 
 __all__ = [
-    "evaluation"
+    "Scorer"
 ]

@@ -5,10 +5,14 @@ from sage.utils import load_available_dataset_from_hf, DatasetsAvailable
 datasets_available = [dataset.name for dataset in DatasetsAvailable]
 
 DF2LENS = {
-    "MultidomainGold": {"train": 3571, "test": 4107},
+    "MultidomainGold": {"train": 3569, "test": 4106},
     "RUSpellRU": {"train": 2000, "test": 2008},
     "MedSpellchecker": {"test": 1054},
     "GitHubTypoCorpusRu": {"test": 868},
+    "MultidomainGold_orth": {"train": 3571, "test": 4107},
+    "RUSpellRU_orth": {"train": 2000, "test": 2008},
+    "MedSpellchecker_orth": {"test": 1054},
+    "GitHubTypoCorpusRu_orth": {"test": 868},
 }
 
 

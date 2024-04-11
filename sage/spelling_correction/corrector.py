@@ -21,7 +21,7 @@ from typing import List, Union, Dict, Optional, Any
 
 import pandas as pd
 
-from ..evaluation.evaluate import evaluation
+from ..evaluation.scorer import Scorer
 from ..utils.data_load_utils import load_available_dataset_from_hf, DatasetsAvailable
 
 
@@ -29,7 +29,12 @@ datasets_available = [dataset.name for dataset in DatasetsAvailable]
 
 
 class AvailableCorrectors(enum.Enum):
-    """Available models for spelling correction"""
+    """Available models for spelling and punctuation correction"""
+
+    sage_fredt5_large = "ai-forever/sage-fredt5-large"
+    sage_fredt5_distilled_95m = "ai-forever/sage-fredt5-distilled-95m"
+    sage_m2m100_1B = "ai-forever/sage-m2m100-1.2B"
+    sage_mt5_large = "ai-forever/sage-mt5-large"
 
     m2m100_1B = "ai-forever/RuM2M100-1.2B"
     m2m100_418M = "ai-forever/RuM2M100-418M"
@@ -46,18 +51,47 @@ class Corrector(metaclass=ABCMeta):
         pass
 
     def correct(self, sentence: str, prefix: Optional[str] = "", **generation_params) -> List[str]:
-        """Correct single sentence"""
+        """
+        Corrects a single input sentence.
 
+        :param sentence: a source sentence;
+        :type sentence: str
+        :param prefix: some models need some sort of a prompting;
+        :type prefix: str
+        :param generation_params: parameters passed to `generate` method of a HuggingFace model;
+        :type generation_params: dict
+        :return: corresponding corrected sentence
+        :rtype: list of str
+        """
         return self.batch_correct([sentence], 1, prefix, **generation_params)[-1]
 
     def evaluate(
             self,
             dataset_name_or_path: Optional[Union[str, os.PathLike]],
+            metrics: List,
             batch_size: int,
             prefix: str = "",
             dataset_split: str = "test",
             **generation_params,
     ) -> Dict[str, float]:
+        """
+        Evaluate the particular model on the spellcheck datasets.
+
+        :param dataset_name_or_path: a path to a locally situated dataset or a name of a dataset on HuggingFace;
+        :type dataset_name_or_path: str
+        :param metrics: set of metrics to be used to report performance;
+        :type metrics: list of str
+        :param batch_size: size of subsample of input sentences;
+        :type batch_size: int
+        :param prefix: some models need some sort of a prompting;
+        :type prefix: str
+        :param dataset_split: train / test / dev part to be evaluated on;
+        :type dataset_split: str
+        :param generation_params: parameters passed to `generate` method of a HuggingFace model;
+        :type generation_params: dict
+        :return: mapping between metric's name and its corresponding value
+        :rtype: dict[str, float]
+        """
         dataset_name_or_path = str(dataset_name_or_path)
         if dataset_name_or_path in datasets_available:
             sources, corrections = load_available_dataset_from_hf(
@@ -65,8 +99,8 @@ class Corrector(metaclass=ABCMeta):
         elif os.path.isdir(dataset_name_or_path):
             if os.path.isfile(os.path.join(dataset_name_or_path, "sources.txt")) and \
                     os.path.isfile(os.path.join(dataset_name_or_path, "corrections.txt")):
-                src_file = open(os.path.join(dataset_name_or_path, "sources.txt"))
-                corr_file = open(os.path.join(dataset_name_or_path, "corrections.txt"))
+                src_file = open(os.path.join(dataset_name_or_path, "sources.txt"), encoding="utf8")
+                corr_file = open(os.path.join(dataset_name_or_path, "corrections.txt"), encoding="utf8")
                 sources = src_file.read().split("\n")
                 corrections = corr_file.read().split("\n")
                 src_file.close()
@@ -103,8 +137,9 @@ class Corrector(metaclass=ABCMeta):
             num_sequences = generation_params["num_return_sequences"]
             answers = [batch_answers[::num_sequences] for batch_answers in answers]
         answers = sum(answers, [])
-        metrics = evaluation(sources, corrections, answers)
-        return metrics
+        scorer = Scorer("errant" in metrics)
+        metrics_dict = scorer.score(sources, corrections, answers, metrics)
+        return metrics_dict
 
     @abstractmethod
     def batch_correct(
