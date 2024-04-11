@@ -16,7 +16,9 @@
     <a href="https://arxiv.org/abs/2308.09435">
     <img alt="Paper" src="https://img.shields.io/badge/arXiv-2308.09435-red">
     </a>
-
+    <a href='https://sage-documentation-main.readthedocs.io/en/latest/?badge=latest'>
+    <img src='https://readthedocs.org/projects/sage-documentation-main/badge/?version=latest' alt='Documentation Status' />
+    </a>
 </p>
 
 <h2 align="center">
