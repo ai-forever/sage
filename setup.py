@@ -35,7 +35,7 @@ extras_requirements = {
 
 setup(
     name="sage",
-    version="1.0.0",
+    version="1.1.0",
     author="Nikita Martynov, Mark Baushenko, Alena Fenogenova and Alexandr Abramov",
     author_email="nikita.martynov.98@list.ru",
     description="SAGE: Spell checking via Augmentation and  Generative distribution Emulation",
