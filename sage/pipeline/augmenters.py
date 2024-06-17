@@ -1,10 +1,10 @@
 from abc import ABC, abstractmethod
+from typing import Optional
 from sage.spelling_corruption.configuration_corruptor import CharAugConfig, WordAugConfig, SBSCConfig
 from sage.spelling_corruption.corruptor import CharAugCorruptor, WordAugCorruptor, SBSCCorruptor
-from typing import Optional
 
 
-class Augmentor(ABC):
+class Augmenter(ABC):
     @abstractmethod
     def augment(self, text: str) -> str:
         """Applies augmentation to the given text.
@@ -18,7 +18,7 @@ class Augmentor(ABC):
         pass
 
 
-class CharAugmentor(Augmentor):
+class CharAugmenter(Augmenter):
     def __init__(self, config: CharAugConfig):
         self.corruptor = CharAugCorruptor.from_config(config)
 
@@ -26,7 +26,7 @@ class CharAugmentor(Augmentor):
         return self.corruptor.corrupt(text, seed=seed)
 
 
-class WordAugmentor(Augmentor):
+class WordAugmenter(Augmenter):
     def __init__(self, config: WordAugConfig):
         self.corruptor = WordAugCorruptor.from_config(config)
 
@@ -34,7 +34,7 @@ class WordAugmentor(Augmentor):
         return self.corruptor.corrupt(text, seed=seed)
 
 
-class SBSCorruptor(Augmentor):
+class SBSCorruptor(Augmenter):
     def __init__(self, config: SBSCConfig):
         self.corruptor = SBSCCorruptor.from_config(config)
 

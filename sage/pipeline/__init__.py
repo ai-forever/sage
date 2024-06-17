@@ -1,11 +1,11 @@
-from .pipeline import AugmentationPipeline
-from .augmentors import CharAugmentor, WordAugmentor, SBSCorruptor
+from .augmenters import CharAugmenter, WordAugmenter, SBSCorruptor
 from .config import PipelineConfig
+from .pipeline import AugmentationPipeline
 
 __all__ = [
     'AugmentationPipeline',
-    'CharAugmentor',
-    'WordAugmentor',
+    'CharAugmenter',
+    'WordAugmenter',
     'SBSCorruptor',
     'PipelineConfig'
 ]
