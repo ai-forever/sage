@@ -2,6 +2,8 @@ import os
 
 from sage.spelling_corruption import WordAugCorruptor, CharAugCorruptor, SBSCCorruptor
 from sage.spelling_corruption import WordAugConfig, CharAugConfig, SBSCConfig
+from augmentex import WordAug
+print(help(WordAug))
 
 corrections = [
     "Я пошёл домой. Больше мне тут делать нечего",
@@ -34,7 +36,7 @@ if __name__ == "__main__":
     sbsc_custom = SBSCCorruptor.from_config(sbsc_config)
 
     sbsc_config_en = SBSCConfig(
-        lang="en",
+        lang="eng",
         reference_dataset_name_or_path=os.path.join(os.getcwd(), "data", "example_data", "bea60k", "subsample")
     )
     sbsc_english = SBSCCorruptor.from_config(sbsc_config_en)

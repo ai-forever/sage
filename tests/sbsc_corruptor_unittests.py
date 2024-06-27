@@ -34,32 +34,35 @@ class SbscCorruptorTests(unittest.TestCase):
             },
         }
         corruptor = StatisticBasedSpellingCorruption(
-            lang="ru",
+            lang="rus",
             typos_count=typos_count,
             stats=stats,
             confusion_matrix={" ": {" ": 1}},
             skip_if_position_not_found=True,
+            random_seed=SEED
         )
-        res = corruptor.batch_corrupt(["я пошел домой"] * 3, SEED)
+        res = corruptor.batch_corrupt(["я пошел домой"] * 3)
         self.assertEqual(len(res), 3)
 
     def test_from_file_txt(self):
         corruptor = StatisticBasedSpellingCorruption(
-            lang="ru",
+            lang="rus",
             skip_if_position_not_found=True,
-            reference_dataset_name_or_path=os.path.join(os.getcwd(), "data", "sanity_check_samples", "corruptor_tests")
+            reference_dataset_name_or_path=os.path.join(os.getcwd(), "data", "sanity_check_samples", "corruptor_tests"),
+            random_seed=SEED
         )
-        res = corruptor.batch_corrupt(["я пошел домой"] * 3, SEED)
+        res = corruptor.batch_corrupt(["я пошел домой"] * 3)
         self.assertEqual(len(res), 3)
 
     def test_from_file_csv(self):
         corruptor = StatisticBasedSpellingCorruption(
-            lang="ru",
+            lang="rus",
             skip_if_position_not_found=True,
             reference_dataset_name_or_path=os.path.join(
-                os.getcwd(), "data", "sanity_check_samples", "corruptor_tests", "csv")
+                os.getcwd(), "data", "sanity_check_samples", "corruptor_tests", "csv"),
+            random_seed=SEED
         )
-        res = corruptor.batch_corrupt(["я пошел домой"] * 3, SEED)
+        res = corruptor.batch_corrupt(["я пошел домой"] * 3)
         self.assertEqual(len(res), 3)
 
     def test_partial_custom_stats(self):
@@ -85,69 +88,75 @@ class SbscCorruptorTests(unittest.TestCase):
             },
         }
         corruptor = StatisticBasedSpellingCorruption(
-            lang="ru",
+            lang="rus",
             typos_count=None,
             stats=stats,
             confusion_matrix={" ": {" ": 1}},
             skip_if_position_not_found=True,
-            reference_dataset_name_or_path=os.path.join(os.getcwd(), "data", "sanity_check_samples", "corruptor_tests")
+            reference_dataset_name_or_path=os.path.join(os.getcwd(), "data", "sanity_check_samples", "corruptor_tests"),
+            random_seed=SEED
         )
-        res = corruptor.batch_corrupt(["я пошел домой"] * 3, SEED)
+        res = corruptor.batch_corrupt(["я пошел домой"] * 3)
         self.assertEqual(len(res), 3)
 
         corruptor = StatisticBasedSpellingCorruption(
-            lang="ru",
+            lang="rus",
             typos_count=typos_count,
             stats=None,
             confusion_matrix={" ": {" ": 1}},
             skip_if_position_not_found=True,
-            reference_dataset_name_or_path=os.path.join(os.getcwd(), "data", "sanity_check_samples", "corruptor_tests")
+            reference_dataset_name_or_path=os.path.join(os.getcwd(), "data", "sanity_check_samples", "corruptor_tests"),
+            random_seed=SEED
         )
-        res = corruptor.batch_corrupt(["я пошел домой"] * 3, SEED)
+        res = corruptor.batch_corrupt(["я пошел домой"] * 3)
         self.assertEqual(len(res), 3)
 
         corruptor = StatisticBasedSpellingCorruption(
-            lang="ru",
+            lang="rus",
             typos_count=typos_count,
             stats=stats,
             confusion_matrix=None,
             skip_if_position_not_found=True,
-            reference_dataset_name_or_path=os.path.join(os.getcwd(), "data", "sanity_check_samples", "corruptor_tests")
+            reference_dataset_name_or_path=os.path.join(os.getcwd(), "data", "sanity_check_samples", "corruptor_tests"),
+            random_seed=SEED
         )
-        res = corruptor.batch_corrupt(["я пошел домой"] * 3, SEED)
+        res = corruptor.batch_corrupt(["я пошел домой"] * 3)
         self.assertEqual(len(res), 3)
 
         corruptor = StatisticBasedSpellingCorruption(
-            lang="ru",
+            lang="rus",
             typos_count=None,
             stats=None,
             confusion_matrix={" ": {" ": 1}},
             skip_if_position_not_found=True,
-            reference_dataset_name_or_path=os.path.join(os.getcwd(), "data", "sanity_check_samples", "corruptor_tests")
+            reference_dataset_name_or_path=os.path.join(os.getcwd(), "data", "sanity_check_samples", "corruptor_tests"),
+            random_seed=SEED
         )
-        res = corruptor.batch_corrupt(["я пошел домой"] * 3, SEED)
+        res = corruptor.batch_corrupt(["я пошел домой"] * 3)
         self.assertEqual(len(res), 3)
 
         corruptor = StatisticBasedSpellingCorruption(
-            lang="ru",
+            lang="rus",
             typos_count=None,
             stats=stats,
             confusion_matrix=None,
             skip_if_position_not_found=True,
-            reference_dataset_name_or_path=os.path.join(os.getcwd(), "data", "sanity_check_samples", "corruptor_tests")
+            reference_dataset_name_or_path=os.path.join(os.getcwd(), "data", "sanity_check_samples", "corruptor_tests"),
+            random_seed=SEED
         )
-        res = corruptor.batch_corrupt(["я пошел домой"] * 3, SEED)
+        res = corruptor.batch_corrupt(["я пошел домой"] * 3)
         self.assertEqual(len(res), 3)
 
         corruptor = StatisticBasedSpellingCorruption(
-            lang="ru",
+            lang="rus",
             typos_count=typos_count,
             stats=None,
             confusion_matrix=None,
             skip_if_position_not_found=True,
-            reference_dataset_name_or_path=os.path.join(os.getcwd(), "data", "sanity_check_samples", "corruptor_tests")
+            reference_dataset_name_or_path=os.path.join(os.getcwd(), "data", "sanity_check_samples", "corruptor_tests"),
+            random_seed=SEED
         )
-        res = corruptor.batch_corrupt(["я пошел домой"] * 3, SEED)
+        res = corruptor.batch_corrupt(["я пошел домой"] * 3)
         self.assertEqual(len(res), 3)
 
     def test_wrong_config(self):
@@ -176,160 +185,176 @@ class SbscCorruptorTests(unittest.TestCase):
         # Empty everything
         with self.assertRaises(RuntimeError):
             corruptor = StatisticBasedSpellingCorruption(
-                lang="ru",
+                lang="rus",
                 skip_if_position_not_found=True,
+                random_seed=SEED
             )
 
         # Empty cases
         with self.assertRaises(RuntimeError):
             corruptor = StatisticBasedSpellingCorruption(
-                lang="ru",
+                lang="rus",
                 typos_count=None,
                 stats=stats,
                 confusion_matrix={" ": {" ": 1}},
                 skip_if_position_not_found=True,
-                reference_dataset_name_or_path=None
+                reference_dataset_name_or_path=None,
+                random_seed=SEED
             )
 
         # Empty cases
         with self.assertRaises(RuntimeError):
             corruptor = StatisticBasedSpellingCorruption(
-                lang="ru",
+                lang="rus",
                 typos_count=typos_count,
                 stats=None,
                 confusion_matrix={" ": {" ": 1}},
                 skip_if_position_not_found=True,
-                reference_dataset_name_or_path=None
+                reference_dataset_name_or_path=None,
+                random_seed=SEED
             )
 
         # Empty cases
         with self.assertRaises(RuntimeError):
             corruptor = StatisticBasedSpellingCorruption(
-                lang="ru",
+                lang="rus",
                 typos_count=typos_count,
                 stats=stats,
                 confusion_matrix=None,
                 skip_if_position_not_found=True,
-                reference_dataset_name_or_path=None
+                reference_dataset_name_or_path=None,
+                random_seed=SEED
             )
 
         # Empty cases
         with self.assertRaises(RuntimeError):
             corruptor = StatisticBasedSpellingCorruption(
-                lang="ru",
+                lang="rus",
                 typos_count=None,
                 stats=None,
                 confusion_matrix={" ": {" ": 1}},
                 skip_if_position_not_found=True,
-                reference_dataset_name_or_path=None
+                reference_dataset_name_or_path=None,
+                random_seed=SEED
             )
 
         # Empty cases
         with self.assertRaises(RuntimeError):
             corruptor = StatisticBasedSpellingCorruption(
-                lang="ru",
+                lang="rus",
                 typos_count=None,
                 stats=stats,
                 confusion_matrix=None,
                 skip_if_position_not_found=True,
-                reference_dataset_name_or_path=None
+                reference_dataset_name_or_path=None,
+                random_seed=SEED
             )
 
         # Empty cases
         with self.assertRaises(RuntimeError):
             corruptor = StatisticBasedSpellingCorruption(
-                lang="ru",
+                lang="rus",
                 typos_count=typos_count,
                 stats=None,
                 confusion_matrix=None,
                 skip_if_position_not_found=True,
-                reference_dataset_name_or_path=None
+                reference_dataset_name_or_path=None,
+                random_seed=SEED
             )
 
         # Wrong directory
         with self.assertRaises(ValueError):
             corruptor = StatisticBasedSpellingCorruption(
-                lang="ru",
+                lang="rus",
                 skip_if_position_not_found=True,
-                reference_dataset_name_or_path=os.path.join(os.getcwd(), "wrong_path")
+                reference_dataset_name_or_path=os.path.join(os.getcwd(), "wrong_path"),
+                random_seed=SEED
             )
 
         # Files with wrong names
         with self.assertRaises(RuntimeError):
             corruptor = StatisticBasedSpellingCorruption(
-                lang="ru",
+                lang="rus",
                 skip_if_position_not_found=True,
                 reference_dataset_name_or_path=os.path.join(
-                    os.getcwd(), "data", "sanity_check_samples", "corruptor_tests", "wrong_names")
+                    os.getcwd(), "data", "sanity_check_samples", "corruptor_tests", "wrong_names"),
+                random_seed=SEED
             )
 
         # Broken txt files
         with self.assertRaises(RuntimeError):
             corruptor = StatisticBasedSpellingCorruption(
-                lang="ru",
+                lang="rus",
                 skip_if_position_not_found=True,
                 reference_dataset_name_or_path=os.path.join(
-                    os.getcwd(), "data", "sanity_check_samples", "corruptor_tests", "broken_text_files")
+                    os.getcwd(), "data", "sanity_check_samples", "corruptor_tests", "broken_text_files"),
+                random_seed=SEED
             )
 
         # Broken csv files
         with self.assertRaises(RuntimeError):
             corruptor = StatisticBasedSpellingCorruption(
-                lang="ru",
+                lang="rus",
                 skip_if_position_not_found=True,
                 reference_dataset_name_or_path=os.path.join(
-                    os.getcwd(), "data", "sanity_check_samples", "corruptor_tests", "broken_csv_file_opening")
+                    os.getcwd(), "data", "sanity_check_samples", "corruptor_tests", "broken_csv_file_opening"),
+                random_seed=SEED
             )
 
         # Broken csv files
         with self.assertRaises(RuntimeError):
             corruptor = StatisticBasedSpellingCorruption(
-                lang="ru",
+                lang="rus",
                 skip_if_position_not_found=True,
                 reference_dataset_name_or_path=os.path.join(
-                    os.getcwd(), "data", "sanity_check_samples", "corruptor_tests", "broken_csv_file_columns")
+                    os.getcwd(), "data", "sanity_check_samples", "corruptor_tests", "broken_csv_file_columns"),
+                random_seed=SEED
             )
 
         # Broken csv files
         with self.assertRaises(ValueError):
             corruptor = StatisticBasedSpellingCorruption(
-                lang="ru",
+                lang="rus",
                 skip_if_position_not_found=True,
                 reference_dataset_name_or_path=os.path.join(
-                    os.getcwd(), "data", "sanity_check_samples", "corruptor_tests", "broken_csv_file_nans")
+                    os.getcwd(), "data", "sanity_check_samples", "corruptor_tests", "broken_csv_file_nans"),
+                random_seed=SEED
             )
 
         # Wrong lang code
         with self.assertRaises(ValueError):
             corruptor = StatisticBasedSpellingCorruption(
-                lang="Rus",
+                lang="Ru",
                 skip_if_position_not_found=True,
-                reference_dataset_name_or_path="RUSpellRU"
+                reference_dataset_name_or_path="RUSpellRU",
+                random_seed=SEED
             )
 
     def test_corrupt(self):
         corruptor = StatisticBasedSpellingCorruption(
-            lang="ru",
+            lang="rus",
             skip_if_position_not_found=True,
-            reference_dataset_name_or_path=os.path.join(os.getcwd(), "data", "sanity_check_samples", "corruptor_tests")
+            reference_dataset_name_or_path=os.path.join(os.getcwd(), "data", "sanity_check_samples", "corruptor_tests"),
+            random_seed=SEED
         )
-        res = corruptor.corrupt("я пошел домой", SEED)
+        res = corruptor.corrupt("я пошел домой")
         self.assertEqual(str, type(res))
 
     def test_from_hf_ruspellru(self):
         corruptor = StatisticBasedSpellingCorruption(
-            lang="ru",
+            lang="rus",
             reference_dataset_name_or_path="RUSpellRU",
+            random_seed=SEED
         )
-        res = corruptor.corrupt("я пошел домой", SEED)
+        res = corruptor.corrupt("я пошел домой")
         self.assertEqual(str, type(res))
 
-        res = corruptor.batch_corrupt(["я пошел домой"] * 3, SEED)
+        res = corruptor.batch_corrupt(["я пошел домой"] * 3)
         self.assertEqual(3, len(res))
 
         sources, corrections = load_available_dataset_from_hf("RUSpellRU", for_labeler=True, split="train")
         reference_stats, _, reference_typos_cnt = process_mistypings(sources, corrections)
-        spoiled_sentences = corruptor.batch_corrupt(corrections, SEED)
+        spoiled_sentences = corruptor.batch_corrupt(corrections)
         actual_stats, _, actual_typos_cnt = process_mistypings(spoiled_sentences, corrections)
 
         draw_and_save_errors_distributions_comparison_charts(
@@ -337,18 +362,19 @@ class SbscCorruptorTests(unittest.TestCase):
 
     def test_from_hf_multidomain_gold(self):
         corruptor = StatisticBasedSpellingCorruption(
-            lang="ru",
+            lang="rus",
             reference_dataset_name_or_path="MultidomainGold",
+            random_seed=SEED
         )
-        res = corruptor.corrupt("я пошел домой", SEED)
+        res = corruptor.corrupt("я пошел домой")
         self.assertEqual(str, type(res))
 
-        res = corruptor.batch_corrupt(["я пошел домой"] * 3, SEED)
+        res = corruptor.batch_corrupt(["я пошел домой"] * 3)
         self.assertEqual(3, len(res))
 
         sources, corrections = load_available_dataset_from_hf("MultidomainGold", for_labeler=True, split="train")
         reference_stats, _, reference_typos_cnt = process_mistypings(sources, corrections)
-        spoiled_sentences = corruptor.batch_corrupt(corrections, SEED)
+        spoiled_sentences = corruptor.batch_corrupt(corrections)
         actual_stats, _, actual_typos_cnt = process_mistypings(spoiled_sentences, corrections)
 
         draw_and_save_errors_distributions_comparison_charts(
@@ -356,19 +382,20 @@ class SbscCorruptorTests(unittest.TestCase):
 
     def test_from_hf_github_typo_corpus(self):
         corruptor = StatisticBasedSpellingCorruption(
-            lang="ru",
+            lang="rus",
             reference_dataset_name_or_path="GitHubTypoCorpusRu",
             reference_dataset_split="test",
+            random_seed=SEED
         )
-        res = corruptor.corrupt("я пошел домой", SEED)
+        res = corruptor.corrupt("я пошел домой")
         self.assertEqual(str, type(res))
 
-        res = corruptor.batch_corrupt(["я пошел домой"] * 3, SEED)
+        res = corruptor.batch_corrupt(["я пошел домой"] * 3)
         self.assertEqual(3, len(res))
 
         sources, corrections = load_available_dataset_from_hf("GitHubTypoCorpusRu", for_labeler=True, split="test")
         reference_stats, _, reference_typos_cnt = process_mistypings(sources, corrections)
-        spoiled_sentences = corruptor.batch_corrupt(corrections, SEED)
+        spoiled_sentences = corruptor.batch_corrupt(corrections)
         actual_stats, _, actual_typos_cnt = process_mistypings(spoiled_sentences, corrections)
 
         draw_and_save_errors_distributions_comparison_charts(
@@ -376,19 +403,20 @@ class SbscCorruptorTests(unittest.TestCase):
 
     def test_from_hf_med_spellchecker(self):
         corruptor = StatisticBasedSpellingCorruption(
-            lang="ru",
+            lang="rus",
             reference_dataset_name_or_path="MedSpellchecker",
             reference_dataset_split="test",
+            random_seed=SEED
         )
-        res = corruptor.corrupt("я пошел домой", SEED)
+        res = corruptor.corrupt("я пошел домой")
         self.assertEqual(str, type(res))
 
-        res = corruptor.batch_corrupt(["я пошел домой"] * 3, SEED)
+        res = corruptor.batch_corrupt(["я пошел домой"] * 3)
         self.assertEqual(3, len(res))
 
         sources, corrections = load_available_dataset_from_hf("MedSpellchecker", for_labeler=True, split="test")
         reference_stats, _, reference_typos_cnt = process_mistypings(sources, corrections)
-        spoiled_sentences = corruptor.batch_corrupt(corrections, SEED)
+        spoiled_sentences = corruptor.batch_corrupt(corrections)
         actual_stats, _, actual_typos_cnt = process_mistypings(spoiled_sentences, corrections)
 
         draw_and_save_errors_distributions_comparison_charts(

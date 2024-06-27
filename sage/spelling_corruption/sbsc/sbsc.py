@@ -52,10 +52,12 @@ class StatisticBasedSpellingCorruption:
             skip_if_position_not_found: bool = True,
             reference_dataset_name_or_path: Optional[Union[str, os.PathLike]] = None,
             reference_dataset_split: str = "train",
+            random_seed: Optional[int] = 42
     ):
         typos_count_ = None
         stats_ = None
         confusion_matrix_ = None
+        self.rng = np.random.default_rng(random_seed)
 
         if (typos_count is None or stats is None or confusion_matrix is None) and reference_dataset_name_or_path is None:
             raise RuntimeError('''You should provide at least one of :typos_count:/:stats:/:confusion_matrix:
@@ -123,14 +125,13 @@ class StatisticBasedSpellingCorruption:
     def show_reference_datasets_available():
         print(*datasets_available, sep="\n")
 
-    def corrupt(self, sentence: str, seed: int) -> str:
-        return self.batch_corrupt([sentence], seed)[0]
+    def corrupt(self, sentence: str) -> str:
+        return self.batch_corrupt([sentence])[0]
 
-    def batch_corrupt(self, sentences: List[str], seed: int) -> List[str]:
+    def batch_corrupt(self, sentences: List[str]) -> List[str]:
         result = []
         pb = tqdm(total=len(sentences))
-        rng = np.random.default_rng(seed)
         for sentence in sentences:
-            result.append(self.model.transform(sentence, rng))
+            result.append(self.model.transform(sentence, self.rng))
             pb.update(1)
         return result

@@ -26,7 +26,20 @@ from typing import List, Dict, Union, Optional
 
 
 @dataclass
-class WordAugConfig:
+class BaseConfig:
+    lang: str = field(
+        default="rus",
+        metadata={"help": "Source language rus/eng"}
+    )
+
+    random_seed: Optional[int] = field(
+        default=42,
+        metadata={"help": "The minimum amount of augmentation. Defaults to 1."},
+    )
+
+
+@dataclass
+class WordAugConfig(BaseConfig):
     """Word-level Augmentex config.
 
     Attributes:
@@ -52,7 +65,7 @@ class WordAugConfig:
 
 
 @dataclass
-class CharAugConfig:
+class CharAugConfig(WordAugConfig):
     """Char-level Augmentex config.
 
     Attributes:
@@ -61,21 +74,6 @@ class CharAugConfig:
         unit_prob (float): Percentage of the phrase to which augmentations will be applied. Defaults to 0.3.
         mult_num (int): Maximum repetitions of characters. Defaults to 5.
     """
-    min_aug: Optional[int] = field(
-        default=1,
-        metadata={"help": "The minimum amount of augmentation. Defaults to 1."},
-    )
-
-    max_aug: Optional[int] = field(
-        default=5,
-        metadata={"help": "The maximum amount of augmentation. Defaults to 5."},
-    )
-
-    unit_prob: Optional[float] = field(
-        default=0.3,
-        metadata={
-            "help": "Percentage of the phrase to which augmentations will be applied. Defaults to 0.3."}
-    )
 
     mult_num: Optional[int] = field(
         default=5,
@@ -84,7 +82,7 @@ class CharAugConfig:
 
 
 @dataclass
-class SBSCConfig:
+class SBSCConfig(BaseConfig):
     """Config for statistic-based spelling corruption.
 
     Attributes:
@@ -98,10 +96,7 @@ class SBSCConfig:
         reference_dataset_name_or_path (bool): Path to or name of reference dataset
         reference_dataset_split (str): Dataset split to use when acquiring statistics.
     """
-    lang: str = field(
-        default="ru",
-        metadata={"help": "Source language"}
-    )
+
     typos_count: Optional[List[int]] = field(
         default=None,
         metadata={"help": "Number of errors per sentence"},

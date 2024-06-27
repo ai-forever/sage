@@ -22,7 +22,7 @@ requirements = [
     "matplotlib>=3.2,<3.7",
     "torch>=1.9.0,<=2.2.0",
     "transformers>=4.20.0",
-    f"augmentex @ file://{augmentex_path}"
+    #f"augmentex @ file://{augmentex_path}"
 ]
 
 extras_requirements = {
@@ -54,7 +54,7 @@ setup(
         "Topic :: Software Development :: Libraries :: Python Modules",
         "Topic :: Text Editors :: Text Processing",
     ],
-    python_requires=">=3.8.0,<3.11.0",
+    python_requires=">=3.8.0,<=3.12.3",
     install_requires=requirements,
     extras_require=extras_requirements,
     keywords="sage spelling correction nlp deep learning transformers pytorch"

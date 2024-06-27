@@ -19,7 +19,7 @@ class CorruptorApiTests(unittest.TestCase):
     ruspellru_stats, ruspellru_confusion_matrix, ruspellru_typos_cnt = process_mistypings(sources, corrections)
 
     def _draw_generated_distributions(self, corruptor, file_name):
-        spoiled_sentences = corruptor.batch_corrupt(self.corrections, seed=SEED)
+        spoiled_sentences = corruptor.batch_corrupt(self.corrections)
         ours_ruspellru_stats, ours_ruspellru_confusion_matrix, ours_ruspellru_typos_cnt = \
             process_mistypings(spoiled_sentences, self.corrections)
         draw_and_save_errors_distributions_comparison_charts(
@@ -38,14 +38,14 @@ class CorruptorApiTests(unittest.TestCase):
         self.assertEqual(3, len(res))
 
     def test_word_augmenter(self):
-        default_config = WordAugConfig()
+        default_config = WordAugConfig(random_seed=SEED)
         corruptor = WordAugCorruptor.from_default_config()
         self.assertEqual(corruptor.engine.min_aug, default_config.min_aug)
         self.assertEqual(corruptor.engine.max_aug, default_config.max_aug)
         self.assertEqual(corruptor.engine.unit_prob, default_config.unit_prob)
         self._test_generation_correct(corruptor)
 
-        config = WordAugConfig(min_aug=2, max_aug=6, unit_prob=0.1)
+        config = WordAugConfig(min_aug=2, max_aug=6, unit_prob=0.1, random_seed=SEED)
         corruptor = WordAugCorruptor.from_config(config)
         self.assertEqual(corruptor.engine.min_aug, config.min_aug)
         self.assertEqual(corruptor.engine.max_aug, config.max_aug)
@@ -53,7 +53,7 @@ class CorruptorApiTests(unittest.TestCase):
         self._test_generation_correct(corruptor)
 
     def test_char_augmenter(self):
-        default_config = CharAugConfig()
+        default_config = CharAugConfig(random_seed=SEED)
         corruptor = CharAugCorruptor.from_default_config()
         self.assertEqual(corruptor.engine.min_aug, default_config.min_aug)
         self.assertEqual(corruptor.engine.max_aug, default_config.max_aug)
@@ -61,7 +61,7 @@ class CorruptorApiTests(unittest.TestCase):
         self.assertEqual(corruptor.engine.mult_num, default_config.mult_num)
         self._test_generation_correct(corruptor)
 
-        config = CharAugConfig(min_aug=2, max_aug=6, unit_prob=0.1, mult_num=3)
+        config = CharAugConfig(min_aug=2, max_aug=6, unit_prob=0.1, mult_num=3, random_seed=SEED)
         corruptor = CharAugCorruptor.from_config(config)
         self.assertEqual(corruptor.engine.min_aug, config.min_aug)
         self.assertEqual(corruptor.engine.max_aug, config.max_aug)
@@ -96,13 +96,15 @@ class CorruptorApiTests(unittest.TestCase):
             typos_count=typos_count,
             stats=stats,
             confusion_matrix={" ": {" ": 1}},
+            random_seed=SEED
         )
         corruptor = SBSCCorruptor.from_config(config)
         self._test_generation_correct(corruptor)
 
         # From txt files
         config = SBSCConfig(
-            reference_dataset_name_or_path=os.path.join(os.getcwd(), "data", "sanity_check_samples", "corruptor_tests")
+            reference_dataset_name_or_path=os.path.join(os.getcwd(), "data", "sanity_check_samples", "corruptor_tests"),
+            random_seed=SEED
         )
         corruptor = SBSCCorruptor.from_config(config)
         self._test_generation_correct(corruptor)
@@ -110,7 +112,8 @@ class CorruptorApiTests(unittest.TestCase):
         # From csv file
         config = SBSCConfig(
             reference_dataset_name_or_path=os.path.join(
-                os.getcwd(), "data", "sanity_check_samples", "corruptor_tests", "csv")
+                os.getcwd(), "data", "sanity_check_samples", "corruptor_tests", "csv"),
+            random_seed=SEED
         )
         corruptor = SBSCCorruptor.from_config(config)
         self._test_generation_correct(corruptor)
@@ -122,6 +125,7 @@ class CorruptorApiTests(unittest.TestCase):
             confusion_matrix={" ": {" ": 1}},
             skip_if_position_not_found=True,
             reference_dataset_name_or_path=os.path.join(os.getcwd(), "data", "sanity_check_samples", "corruptor_tests"),
+            random_seed=SEED
         )
         corruptor = SBSCCorruptor.from_config(config)
         self._test_generation_correct(corruptor)
@@ -132,6 +136,7 @@ class CorruptorApiTests(unittest.TestCase):
             confusion_matrix={" ": {" ": 1}},
             skip_if_position_not_found=True,
             reference_dataset_name_or_path=os.path.join(os.getcwd(), "data", "sanity_check_samples", "corruptor_tests"),
+            random_seed=SEED
         )
         corruptor = SBSCCorruptor.from_config(config)
         self._test_generation_correct(corruptor)
@@ -142,6 +147,7 @@ class CorruptorApiTests(unittest.TestCase):
             confusion_matrix=None,
             skip_if_position_not_found=True,
             reference_dataset_name_or_path=os.path.join(os.getcwd(), "data", "sanity_check_samples", "corruptor_tests"),
+            random_seed=SEED
         )
         corruptor = SBSCCorruptor.from_config(config)
         self._test_generation_correct(corruptor)
@@ -152,6 +158,7 @@ class CorruptorApiTests(unittest.TestCase):
             confusion_matrix={" ": {" ": 1}},
             skip_if_position_not_found=True,
             reference_dataset_name_or_path=os.path.join(os.getcwd(), "data", "sanity_check_samples", "corruptor_tests"),
+            random_seed=SEED
         )
         corruptor = SBSCCorruptor.from_config(config)
         self._test_generation_correct(corruptor)
@@ -161,7 +168,8 @@ class CorruptorApiTests(unittest.TestCase):
             stats=stats,
             confusion_matrix=None,
             skip_if_position_not_found=True,
-            reference_dataset_name_or_path=os.path.join(os.getcwd(), "data", "sanity_check_samples", "corruptor_tests")
+            reference_dataset_name_or_path=os.path.join(os.getcwd(), "data", "sanity_check_samples", "corruptor_tests"),
+            random_seed=SEED
         )
         corruptor = SBSCCorruptor.from_config(config)
         self._test_generation_correct(corruptor)
@@ -171,7 +179,8 @@ class CorruptorApiTests(unittest.TestCase):
             stats=None,
             confusion_matrix=None,
             skip_if_position_not_found=True,
-            reference_dataset_name_or_path=os.path.join(os.getcwd(), "data", "sanity_check_samples", "corruptor_tests")
+            reference_dataset_name_or_path=os.path.join(os.getcwd(), "data", "sanity_check_samples", "corruptor_tests"),
+            random_seed=SEED
         )
         corruptor = SBSCCorruptor.from_config(config)
         self._test_generation_correct(corruptor)
@@ -202,12 +211,14 @@ class CorruptorApiTests(unittest.TestCase):
             typos_count=typos_count,
             stats=stats,
             confusion_matrix={" ": {" ": 1}},
+            random_seed=SEED
         )
         corruptor = SBSCCorruptor.from_config(config)
         self._draw_generated_distributions(corruptor, "sbsc_random_stats.jpg")
 
         config = SBSCConfig(
             reference_dataset_name_or_path=os.path.join(os.getcwd(), "data", "sanity_check_samples", "corruptor_tests"),
+            random_seed=SEED
         )
         corruptor = SBSCCorruptor.from_config(config)
         self._draw_generated_distributions(corruptor, "sbsc_stats_from_txt.jpg")
@@ -215,6 +226,7 @@ class CorruptorApiTests(unittest.TestCase):
         config = SBSCConfig(
             reference_dataset_name_or_path=os.path.join(
                 os.getcwd(), "data", "sanity_check_samples", "corruptor_tests", "csv"),
+            random_seed=SEED
         )
         corruptor = SBSCCorruptor.from_config(config)
         self._draw_generated_distributions(corruptor, "sbsc_stats_from_csv.jpg")
@@ -225,21 +237,24 @@ class CorruptorApiTests(unittest.TestCase):
             confusion_matrix={" ": {" ": 1}},
             skip_if_position_not_found=True,
             reference_dataset_name_or_path=os.path.join(os.getcwd(), "data", "sanity_check_samples", "corruptor_tests"),
+            random_seed=SEED
         )
         corruptor = SBSCCorruptor.from_config(config)
         self._draw_generated_distributions(corruptor, "sbsc_custom_stats_typos_from_txt.jpg")
 
         config = SBSCConfig(
             reference_dataset_name_or_path="RUSpellRU",
-            reference_dataset_split="train"
+            reference_dataset_split="train",
+            random_seed=SEED
         )
         corruptor = SBSCCorruptor.from_config(config)
         self._draw_generated_distributions(corruptor, "sbsc_from_dataset.jpg")
 
         # English version
         en_config = SBSCConfig(
-            lang="en",
-            reference_dataset_name_or_path=os.path.join(os.getcwd(), "data", "example_data", "bea60k", "subsample")
+            lang="eng",
+            reference_dataset_name_or_path=os.path.join(os.getcwd(), "data", "example_data", "bea60k", "subsample"),
+            random_seed=SEED
         )
         corruptor = SBSCCorruptor.from_config(en_config)
 
@@ -263,15 +278,16 @@ class CorruptorApiTests(unittest.TestCase):
             corruptor = SBSCCorruptor.from_config(
                 config=SBSCConfig(
                     reference_dataset_name_or_path=None,
+                    random_seed=SEED
                 )
             )
 
     def test_word_aug_batch_corrupt(self):
-        config = WordAugConfig(min_aug=2, max_aug=6, unit_prob=0.1)
+        config = WordAugConfig(min_aug=2, max_aug=6, unit_prob=0.1, random_seed=SEED)
         corruptor = WordAugCorruptor.from_config(config)
         self._draw_generated_distributions(corruptor, "word_aug.jpg")
 
-        config = CharAugConfig(min_aug=2, max_aug=6, unit_prob=0.1, mult_num=3)
+        config = CharAugConfig(min_aug=2, max_aug=6, unit_prob=0.1, mult_num=3, random_seed=SEED)
         corruptor = CharAugCorruptor.from_config(config)
         self._draw_generated_distributions(corruptor, "char_aug.jpg")
 

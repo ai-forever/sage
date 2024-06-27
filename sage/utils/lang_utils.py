@@ -2,7 +2,7 @@
 
 from collections import namedtuple
 
-AVAILABLE_LANG_CODES = ["ru", "en"]
+AVAILABLE_LANG_CODES = ["rus", "eng"]
 
 
 class InsertionOptions(namedtuple("insertion_options", AVAILABLE_LANG_CODES)):
@@ -14,11 +14,11 @@ class SubstitutionOptions(namedtuple("substitution_options", AVAILABLE_LANG_CODE
 
 
 INSERTION_OPTIONS = InsertionOptions(
-    ru=list("абвгдеёжзийклмнопрстуфхцчшщъыьэюя"),
-    en=list("abcdefghijklmnopqrstuvwxyz")
+    rus=list("абвгдеёжзийклмнопрстуфхцчшщъыьэюя"),
+    eng=list("abcdefghijklmnopqrstuvwxyz")
 )
 
 SUBSTITUTION_OPTIONS = SubstitutionOptions(
-    ru=list("абвгдеёжзийклмнопрстуфхцчшщъыьэюя "),
-    en=list("abcdefghijklmnopqrstuvwxyz ")
+    rus=list("абвгдеёжзийклмнопрстуфхцчшщъыьэюя "),
+    eng=list("abcdefghijklmnopqrstuvwxyz ")
 )

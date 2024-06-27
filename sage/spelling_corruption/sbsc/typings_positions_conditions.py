@@ -80,7 +80,7 @@ class SubstitutionConditions(Condition):
     @staticmethod
     def condition(pos: int, used_positions: List[int], sentence: str, lang: str) -> bool:
         return pos in used_positions or sentence[pos] == " " or sentence[pos] in string.punctuation or \
-               sentence[pos] in string.digits or ((sentence[pos] in string.ascii_letters) == (lang == "ru"))
+               sentence[pos] in string.digits or ((sentence[pos] in string.ascii_letters) == (lang == "rus"))
 
     @staticmethod
     def alter_positions(pos: int, used_positions: List[int]):

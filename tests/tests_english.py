@@ -12,6 +12,7 @@ logger = logging.getLogger("tests")
 logger.setLevel(logging.INFO)
 
 SEED = 102
+LANG = "eng"
 seed = np.random.default_rng(SEED)
 
 
@@ -352,7 +353,7 @@ class AugmenterTests(unittest.TestCase):
                 "confusion_matrix": {" ": {" ": 1}},
                 "skip_if_position_not_found": skip_mode,
                 "debug_mode": True,
-                "lang": "en",
+                "lang": LANG,
             }
             m = Model(**params)
             m.transform(sentence, seed)
@@ -379,7 +380,7 @@ class AugmenterTests(unittest.TestCase):
                 "confusion_matrix": {" ": {" ": 1}},
                 "skip_if_position_not_found": skip_mode,
                 "debug_mode": True,
-                "lang": "en",
+                "lang": LANG,
             }
             m = Model(**params)
             actual_transform1 = m.transform(sentence1, seed)
@@ -415,7 +416,7 @@ class AugmenterTests(unittest.TestCase):
                 "confusion_matrix": {"l": {"x": 1}},
                 "skip_if_position_not_found": skip_mode,
                 "debug_mode": True,
-                "lang": "en",
+                "lang": LANG,
             }
             m = Model(**params)
             actual_transform1 = m.transform(sentence1, seed)
@@ -455,7 +456,7 @@ class AugmenterTests(unittest.TestCase):
                 "confusion_matrix": {" ": {" ": 1}},
                 "skip_if_position_not_found": skip_mode,
                 "debug_mode": True,
-                "lang": "en",
+                "lang": LANG,
             }
             m = Model(**params)
             actual_transform1 = m.transform(sentence1, seed)
@@ -497,7 +498,7 @@ class AugmenterTests(unittest.TestCase):
                 "confusion_matrix": {" ": {" ": 1}},
                 "skip_if_position_not_found": skip_mode,
                 "debug_mode": True,
-                "lang": "en",
+                "lang": LANG,
             }
             m = Model(**params)
             actual_transform1 = m.transform(sentence1, seed)
@@ -533,7 +534,7 @@ class AugmenterTests(unittest.TestCase):
                 "confusion_matrix": {" ": {" ": 1}},
                 "skip_if_position_not_found": skip_mode,
                 "debug_mode": True,
-                "lang": "en",
+                "lang": LANG,
             }
             m = Model(**params)
             actual_transform1 = m.transform(sentence1, seed)
@@ -585,7 +586,7 @@ class AugmenterTests(unittest.TestCase):
             "confusion_matrix": {" ": {" ": 1}},
             "skip_if_position_not_found": True,
             "debug_mode": True,
-            "lang": "en",
+            "lang": LANG,
         }
         m = Model(**params)
         result = m.transform(sentence, seed)
@@ -621,7 +622,7 @@ class AugmenterTests(unittest.TestCase):
             "confusion_matrix": {" ": {" ": 1}},
             "skip_if_position_not_found": True,
             "debug_mode": True,
-            "lang": "en",
+            "lang": LANG,
         }
         m = Model(**params)
 
@@ -670,7 +671,7 @@ class AugmenterTests(unittest.TestCase):
             "confusion_matrix": {" ": {" ": 1}},
             "skip_if_position_not_found": True,
             "debug_mode": True,
-            "lang": "en",
+            "lang": LANG,
         }
         m = Model(**params)
         bins = [0., 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.]
@@ -700,7 +701,7 @@ class AugmenterTests(unittest.TestCase):
             "confusion_matrix": {" ": {" ": 1}},
             "skip_if_position_not_found": True,
             "debug_mode": True,
-            "lang": "en",
+            "lang": LANG,
         }
         m = Model(**params)
         for sample_length in range(10, 1000):
@@ -757,7 +758,7 @@ class AugmenterTests(unittest.TestCase):
             "confusion_matrix": {},
             "skip_if_position_not_found": True,
             "debug_mode": True,
-            "lang": "en",
+            "lang": LANG,
         }
         self.assertRaises(ValueError, Model, **params)
 
@@ -768,7 +769,7 @@ class AugmenterTests(unittest.TestCase):
             "confusion_matrix": {},
             "skip_if_position_not_found": True,
             "debug_mode": True,
-            "lang": "en",
+            "lang": LANG,
         }
         self.assertRaises(ValueError, Model, **params)
 
@@ -783,7 +784,7 @@ class AugmenterTests(unittest.TestCase):
             "confusion_matrix": {},
             "skip_if_position_not_found": True,
             "debug_mode": True,
-            "lang": "en",
+            "lang": LANG,
         }
         self.assertRaises(ValueError, Model, **params)
 
@@ -814,7 +815,7 @@ class AugmenterTests(unittest.TestCase):
             "confusion_matrix": {" ": {" ": 1}},
             "skip_if_position_not_found": True,
             "debug_mode": True,
-            "lang": "en",
+            "lang": LANG,
         }
         self.assertRaises(ValueError, Model, **params)
 
@@ -829,7 +830,7 @@ class AugmenterTests(unittest.TestCase):
             "confusion_matrix": {" ": {" ": 1}},
             "skip_if_position_not_found": True,
             "debug_mode": True,
-            "lang": "en",
+            "lang": LANG,
         }
         self.assertRaises(ValueError, Model, **params)
 
@@ -840,7 +841,7 @@ class AugmenterTests(unittest.TestCase):
             "confusion_matrix": {" ": {" ": 1}},
             "skip_if_position_not_found": True,
             "debug_mode": True,
-            "lang": "en",
+            "lang": LANG,
         }
         self.assertRaises(ValueError, Model, **params)
 
@@ -855,7 +856,7 @@ class AugmenterTests(unittest.TestCase):
             "confusion_matrix": {},
             "skip_if_position_not_found": True,
             "debug_mode": True,
-            "lang": "en",
+            "lang": LANG,
         }
         self.assertRaises(ValueError, Model, **params)
 
@@ -870,7 +871,7 @@ class AugmenterTests(unittest.TestCase):
             "confusion_matrix": {},
             "skip_if_position_not_found": True,
             "debug_mode": True,
-            "lang": "en",
+            "lang": LANG,
         }
         model = Model(**params)
 
@@ -888,7 +889,7 @@ class AugmenterTests(unittest.TestCase):
             "confusion_matrix": {},
             "skip_if_position_not_found": True,
             "debug_mode": True,
-            "lang": "en",
+            "lang": LANG,
         }
         self.assertRaises(ValueError, Model, **params)
 
@@ -903,7 +904,7 @@ class AugmenterTests(unittest.TestCase):
             "confusion_matrix": {},
             "skip_if_position_not_found": True,
             "debug_mode": True,
-            "lang": "en",
+            "lang": LANG,
         }
         self.assertRaises(ValueError, Model, **params)
 
@@ -934,7 +935,7 @@ class AugmenterTests(unittest.TestCase):
             "confusion_matrix": {" ": {" ": 1}},
             "skip_if_position_not_found": True,
             "debug_mode": True,
-            "lang": "en",
+            "lang": LANG,
         }
         self.assertRaises(ValueError, Model, **params)
 
@@ -949,7 +950,7 @@ class AugmenterTests(unittest.TestCase):
             "confusion_matrix": {"adff": {"s": 1}},
             "skip_if_position_not_found": True,
             "debug_mode": True,
-            "lang": "en",
+            "lang": LANG,
         }
         self.assertRaises(ValueError, Model, **params)
 
@@ -964,7 +965,7 @@ class AugmenterTests(unittest.TestCase):
             "confusion_matrix": {"f": {"asdf": 1}},
             "skip_if_position_not_found": True,
             "debug_mode": True,
-            "lang": "en",
+            "lang": LANG,
         }
         self.assertRaises(ValueError, Model, **params)
 
@@ -979,7 +980,7 @@ class AugmenterTests(unittest.TestCase):
             "confusion_matrix": {"a": {"b": -1}},
             "skip_if_position_not_found": True,
             "debug_mode": True,
-            "lang": "en",
+            "lang": LANG,
         }
         self.assertRaises(ValueError, Model, **params)
 
@@ -1020,7 +1021,7 @@ class AugmenterTests(unittest.TestCase):
             "confusion_matrix": {" ": {" ": 1}},
             "skip_if_position_not_found": True,
             "debug_mode": True,
-            "lang": "en",
+            "lang": LANG,
         }
         m = Model(**params)
         results = []

@@ -34,7 +34,7 @@ def load_available_dataset_from_hf(
     if dataset_name[-4:] == "orth":
         source_collection = "spellcheck_benchmark"
         dataset_name = dataset_name[:-5]
-    dataset = load_dataset("ai-forever/{}".format(source_collection), dataset_name, split=split)
+    dataset = load_dataset("ai-forever/{}".format(source_collection), dataset_name, split=split, trust_remote_code=True)
     if split is None:
         dataset = pd.concat([dataset[split].to_pandas() for split in dataset.keys()]).reset_index(drop=True)
     else:

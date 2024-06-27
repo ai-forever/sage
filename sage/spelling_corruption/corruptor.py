@@ -72,13 +72,12 @@ class Corruptor(metaclass=ABCMeta):
         return corruptor
 
     @abstractmethod
-    def corrupt(self, sentence: str, action: Optional[str] = None, seed: Optional[int] = 42) -> str:
+    def corrupt(self, sentence: str, action: Optional[str] = None) -> str:
         pass
 
     @abstractmethod
     def batch_corrupt(
-            self, sentences: List[str], action: Optional[str] = None, batch_prob: Optional[float] = 0.3,
-            seed: Optional[int] = 42) -> List[str]:
+            self, sentences: List[str], action: Optional[str] = None, batch_prob: Optional[float] = 0.3) -> List[str]:
         pass
 
     @staticmethod
@@ -90,17 +89,15 @@ class Corruptor(metaclass=ABCMeta):
 class AugCorruptor(Corruptor, metaclass=ABCMeta):
     """Base class for Augmentex-based corruptors."""
 
-    def corrupt(self, sentence: str, action: Optional[str] = None, seed: Optional[int] = 42) -> str:
-        return self.engine.augment(sentence, seed=seed, action=action)
+    def corrupt(self, sentence: str, action: Optional[str] = None) -> str:
+        return self.engine.augment(sentence, action=action)
 
     def batch_corrupt(
-            self, sentences: List[str], action: Optional[str] = None, batch_prob: Optional[float] = 0.3,
-            seed: Optional[int] = 42) -> List[str]:
-        return self.engine.aug_batch(sentences, seed=seed, batch_prob=batch_prob, action=action)
+            self, sentences: List[str], action: Optional[str] = None, batch_prob: Optional[float] = 0.3) -> List[str]:
+        return self.engine.aug_batch(sentences, batch_prob=batch_prob, action=action)
 
 
 class WordAugCorruptor(AugCorruptor):
-
     engine = WordAug
 
     @staticmethod
@@ -109,7 +106,6 @@ class WordAugCorruptor(AugCorruptor):
 
 
 class CharAugCorruptor(AugCorruptor):
-
     engine = CharAug
 
     @staticmethod
@@ -118,16 +114,14 @@ class CharAugCorruptor(AugCorruptor):
 
 
 class SBSCCorruptor(Corruptor):
-
     engine = StatisticBasedSpellingCorruption
 
-    def corrupt(self, sentence: str, action: Optional[str] = None, seed: Optional[int] = 42) -> str:
-        return self.engine.corrupt(sentence, seed)
+    def corrupt(self, sentence: str, action: Optional[str] = None) -> str:
+        return self.engine.corrupt(sentence)
 
-    def batch_corrupt(
-            self, sentences: List[str], action: Optional[str] = None, batch_prob: Optional[float] = 0.3,
-            seed: Optional[int] = 42) -> List[str]:
-        return self.engine.batch_corrupt(sentences, seed)
+    def batch_corrupt(self, sentences: List[str], action: Optional[str] = None, batch_prob: Optional[float] = 0.3) -> \
+    List[str]:
+        return self.engine.batch_corrupt(sentences)
 
     @staticmethod
     def get_default_config():
