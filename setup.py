@@ -5,8 +5,6 @@ from setuptools import setup, find_packages
 with open("README.md", mode="r", encoding="utf-8") as readme_file:
     readme = readme_file.read()
 
-setup_dir = os.path.abspath(os.path.dirname(__file__))
-augmentex_path = os.path.join(setup_dir, "wheels/augmentex-1.0.3-py3-none-any.whl")
 
 requirements = [
     "numpy",
@@ -16,13 +14,13 @@ requirements = [
     "packaging",
     "requests",
     "sentencepiece",
-    "datasets",
+    "datasets<2.20.0",
     "protobuf",
     "timeout_decorator",
     "matplotlib>=3.2,<3.7",
     "torch>=1.9.0,<=2.2.0",
     "transformers>=4.20.0",
-    #f"augmentex @ file://{augmentex_path}"
+    "augmentex==1.2.1"
 ]
 
 extras_requirements = {
