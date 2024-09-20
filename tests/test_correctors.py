@@ -72,4 +72,4 @@ if __name__ == "__main__":
 
     print("\nsage_m2m_100: \n")
     print("\n".join(["{}: {}".format(k, v[0]) for k, v in zip(
-        example_sentences_ru, sage_m2m_100.batch_correct(example_sentences_en, 1))]))
+        example_sentences_ru, sage_m2m_100.batch_correct(example_sentences_ru, 1))]))
