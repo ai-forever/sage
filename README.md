@@ -85,6 +85,12 @@ cd sage
 pip install .
 ```
 
+### Regular Google Colab install
+```commandline
+!git clone https://github.com/ai-forever/sage.git
+!pip install /content/sage/.
+```
+
 To install extra requirements that you are going to need when working with ERRANT-based metric run
 
 ```commandline
